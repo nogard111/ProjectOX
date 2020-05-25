@@ -16,6 +16,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <varsion.log4J>2.13.3</varsion.log4J>
+    <jacoco.version>0.8.4</jacoco.version>
   </properties>
 
   <dependencies>
@@ -40,40 +41,54 @@
   </dependencies>
 
   <build>
-  
       <plugins>
-	    <plugin>
+        <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.4</version>
+          <version>${jacoco.version}</version>
+          <configuration>
+            <excludes>
+              <exclude>main/**/*.class</exclude>
+              <exclude>**/**/EndGameServiceImpl.class</exclude>
+              <exclude>**/Player.class</exclude>
+              <exclude>**/GameState.class</exclude>
+              <exclude>configuration/**/*.class</exclude>
+              <exclude>exceptions/**/*.class</exclude>
+              <exclude>**/ShipsUtilityOnlyForTests.class</exclude>
+              <exclude>**/CellState.class</exclude>
+            </excludes>
+          </configuration>
           <executions>
             <execution>
+              <id>jacoco-initialize</id>
               <goals>
                 <goal>prepare-agent</goal>
               </goals>
             </execution>
             <execution>
-              <id>report</id>
-              <phase>test</phase>
+              <id>jacoco-site</id>
+              <phase>package</phase>
               <goals>
                 <goal>report</goal>
               </goals>
             </execution>
             <execution>
-              <id>check</id>
+              <id>default-check</id>
               <goals>
                 <goal>check</goal>
               </goals>
               <configuration>
+                <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                 <rules>
                   <rule>
-                    <element>BUNDLE
-                    </element>
                     <limits>
                       <limit>
-                        <counter>COMPLEXITY</counter>
-                        <value>COVEREDRATIO</value>
-                        <minimum>0.000000</minimum>
+                        <counter>INSTRUCTION</counter>
+                        <minimum>0.90</minimum>
+                      </limit>
+                      <limit>
+                        <counter>METHOD</counter>
+                        <minimum>0.80</minimum>
                       </limit>
                     </limits>
                   </rule>
