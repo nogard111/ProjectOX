@@ -6,4 +6,6 @@ public interface GameNotifications {
     void displayScore(String message);
 
     void showWinnerMessage(String winnerMessage);
+
+    void showFinalWinnerAndClose(String winnerMessage);
 }

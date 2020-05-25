@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class GameEngine implements IGameEngine {
+    private int GamesToPlay = 3;
     private int sizeY;
     private int sizeX;
     private int lenToWin;
@@ -25,11 +26,12 @@ public class GameEngine implements IGameEngine {
         sizeX = config.columnSize;
         sizeY = config.rowSize;
         lenToWin = config.lenToWin;
+
         //String playerOName = "Adam";
         //String playerXName = "Ewa";
         //sizeX = 3;
         //sizeY = 4;
-        lenToWin = 3;
+        //lenToWin = 3;
 
         players.put(FieldType.O, new Player(playerOName));
         players.put(FieldType.X, new Player(playerXName));
@@ -52,7 +54,7 @@ public class GameEngine implements IGameEngine {
             selected.type = currentPlayer;
             var winners = checkWinners();
             if (winners != null) {
-                scoreUpdate(winners);
+                finishStage(winners);
             } else {
                 switchPlayer();
                 notificationsPresenter.displayMessage("Make your move " + players.get(currentPlayer).name);
@@ -63,7 +65,7 @@ public class GameEngine implements IGameEngine {
     }
 
 
-    private void scoreUpdate(FieldType[] winners) {
+    private void finishStage(FieldType[] winners) {
         String winnerMessage;
         if(winners.length == 2) {
             for (var winner : winners) {
@@ -78,7 +80,33 @@ public class GameEngine implements IGameEngine {
 
         var score = players.get(FieldType.O).getScore() + " " + players.get(FieldType.X).getScore();
         notificationsPresenter.displayScore(score);
-        notificationsPresenter.showWinnerMessage(winnerMessage);
+
+        GamesToPlay--;
+        if(GamesToPlay == 0 ) {
+            notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : "+ GetWinner());
+        }else {
+            clearCurrentStage();
+            notificationsPresenter.showWinnerMessage(winnerMessage);
+        }
+    }
+
+    private void clearCurrentStage() {
+        for (int y = 0; y < fields.length; y++) {
+            var row = fields[y];
+            for (int x = 0; x < row.length; x++) {
+                row[x].type = FieldType.NONE;
+            }
+        }
+    }
+
+    private String GetWinner() {
+        var player1 = players.get(FieldType.O);
+        var player2 = players.get(FieldType.X);
+
+        if (player1.score == player2.score) {
+            return "NONE !";
+        }
+        return player1.score > player2.score ? player1.name : player2.name;
     }
 
 

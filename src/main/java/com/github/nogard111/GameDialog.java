@@ -75,14 +75,21 @@ public class GameDialog extends JDialog implements GameNotifications {
                 modelDialog.setVisible(true);
     }
 
+    @Override
+    public void showFinalWinnerAndClose(String winnerMessage) {
+        final JDialog modelDialog = createWinnerDialog(this,winnerMessage);
+        modelDialog.setVisible(true);
+        Finish();
+    }
+
     private JDialog createWinnerDialog(GameDialog gameDialog, String winnerMessage) {
         final JDialog modelDialog = new JDialog(gameDialog, winnerMessage,
                 Dialog.ModalityType.DOCUMENT_MODAL);
-        modelDialog.setBounds(132, 132, 200, 200);
+        modelDialog.setBounds(132, 132, 400, 400);
 
         Container dialogContainer = modelDialog.getContentPane();
 
-        JButton okButton = new JButton("Ok");
+        JButton okButton = new JButton(winnerMessage + " (Click me)");
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
