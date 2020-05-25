@@ -48,7 +48,8 @@ public class GameDialog extends JDialog implements GameNotifications {
     }
 
     private void createUIComponents() {
-        myDrawPanel1 = new MyDrawPanel(this);
+        GameEngine game = new GameEngine(this);
+        myDrawPanel1 = new MyDrawPanel(game);
 
        //todo:  myDrawPanel1.addActionListener(); Finish()
     }
@@ -80,11 +81,7 @@ public class GameDialog extends JDialog implements GameNotifications {
         modelDialog.setBounds(132, 132, 200, 200);
 
         Container dialogContainer = modelDialog.getContentPane();
-        /*dialogContainer.setLayout(new BorderLayout());
-        dialogContainer.add(new JLabel("                         Welcome to Swing!")
-                , BorderLayout.CENTER);
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new FlowLayout());*/
+
         JButton okButton = new JButton("Ok");
         okButton.addActionListener(new ActionListener() {
             @Override
@@ -93,9 +90,6 @@ public class GameDialog extends JDialog implements GameNotifications {
             }
         });
         dialogContainer.add(okButton);
-        //panel1.add(okButton);
-        //dialogContainer.add(panel1, BorderLayout.SOUTH);
-
         return modelDialog;
     }
 }

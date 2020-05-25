@@ -7,8 +7,7 @@ import org.apache.logging.log4j.core.impl.Log4jLogEvent;
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
     public static void main(String[] args) {
         GameDialog dialog = new GameDialog();
         dialog.pack();

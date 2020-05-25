@@ -8,7 +8,6 @@ public class Player {
         name = playerName;
     }
 
-
     public String getScore() {
         return name + " " + score + "p";
     }
