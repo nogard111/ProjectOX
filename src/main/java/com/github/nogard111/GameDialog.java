@@ -48,7 +48,13 @@ public class GameDialog extends JDialog implements GameNotifications {
     }
 
     private void createUIComponents() {
-        GameEngine game = new GameEngine(this);
+
+        var configLoader = new ConfigLoader(System.in);
+        var config = configLoader.getConfigFromUser();
+
+        config = new GameConfig((byte)3,(byte)4,(byte)3,"Adam","Ewa");
+
+        GameEngine game = new GameEngine(this, config);
         myDrawPanel1 = new MyDrawPanel(game);
 
        //todo:  myDrawPanel1.addActionListener(); Finish()

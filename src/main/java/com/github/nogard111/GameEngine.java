@@ -13,23 +13,14 @@ public class GameEngine implements IGameEngine {
     private Map<FieldType, Player> players = new HashMap<>();
     private GameNotifications notificationsPresenter;
 
-    public GameEngine(GameNotifications notificationPresenter) {
+    public GameEngine(GameNotifications notificationPresenter,GameConfig config) {
         notificationsPresenter = notificationPresenter;
-
-        var configLoader = new ConfigLoader();
-        var config = configLoader.getConfigFromUser();
 
         String playerOName = config.playerO;
         String playerXName = config.playerX;
         sizeX = config.columnSize;
         sizeY = config.rowSize;
         lenToWin = config.lenToWin;
-
-        //String playerOName = "Adam";
-        //String playerXName = "Ewa";
-        //sizeX = 3;
-        //sizeY = 4;
-        //lenToWin = 3;
 
         players.put(FieldType.O, new Player(playerOName));
         players.put(FieldType.X, new Player(playerXName));
@@ -39,6 +30,15 @@ public class GameEngine implements IGameEngine {
         currentPlayer = FieldType.O;
     }
 
+    /**
+     *
+     * @param x
+     * Ratio of the board from 0 to 1
+     * @param y
+     * Ratio of the board from 0 to 1
+     * @return
+     * Does click cause change
+     */
     @Override
     public boolean clicked(float x, float y) {
         Field selected = getField(x, y);
