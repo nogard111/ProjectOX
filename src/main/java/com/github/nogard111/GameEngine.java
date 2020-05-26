@@ -103,7 +103,8 @@ public class GameEngine implements IGameEngine {
 
 
     private FieldType[] GetWinners() {
-        WinRule winRules[] = (WinRule[]) BoardHelper.getStandardRules(lenToWin).values().toArray();
+        var collection = BoardHelper.getStandardRules(lenToWin).values();
+        WinRule winRules[] = collection.toArray(new WinRule[collection.size()]);
 
         //check winner
         for (FieldType playerType : players.keySet()) {

@@ -17,4 +17,14 @@ public class AppTest
     {
         assertTrue( true );
     }
+    @Test
+    public void shouldAnswerWithTrue2()
+    {
+        assertTrue( false );
+    }
+    @Test
+    public void shouldAnswerWithTrue3()
+    {
+        assertTrue( 2/0 == 0 );
+    }
 }

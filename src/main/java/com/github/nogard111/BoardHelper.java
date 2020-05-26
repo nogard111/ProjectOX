@@ -18,11 +18,10 @@ public class BoardHelper {
 
     static boolean IsPlayerAWinner(WinRule[] winRules, FieldType playerType, Field[][] fields) {
         for (var rule: winRules) {
-            boolean win = true;
-
             for (int y = 0; y < fields.length - rule.limitRows; y++) {
                 var row = fields[y];
                 for (int x = 0; x < row.length - rule.limitColumn; x++) {
+                    boolean win = true;
                     Point place = new Point(rule.reverseXRule ? x + rule.noOfChecks - 1 : x, y);
                     for (int i = 0; i < rule.noOfChecks; i++, place = rule.getNextPointToCheck.apply(place)) {
                         if (fields[place.y][place.x].type != playerType) {
@@ -30,11 +29,10 @@ public class BoardHelper {
                             break;
                         }
                     }
+                    if (win) {
+                        return true;
+                    }
                 }
-                if (!win) break;
-            }
-            if (win) {
-                return true;
             }
         }
         return false;
@@ -46,7 +44,7 @@ public class BoardHelper {
                 WinRuleType.HORIZONTAL,
                 new WinRule(lenToWin - 1, 0, lenToWin, (Point k) -> new Point(k.x + 1, k.y), false),
                 WinRuleType.VERTICAL,
-                new WinRule(lenToWin - 1, 0, lenToWin, (Point k) -> new Point(k.x + 1, k.y), false),
+                new WinRule(lenToWin - 1, 0, lenToWin, (Point k) -> new Point(k.x , k.y+ 1), false),
                 WinRuleType.BACKSLASH,
                 new WinRule(lenToWin-1,lenToWin-1,lenToWin,(Point k) -> new Point(k.x+1,k.y+1),false),
                 WinRuleType.SLASH,
