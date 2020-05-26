@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class GameDialog extends JDialog implements GameNotifications {
     private JPanel contentPane;
     private JButton buttonCancel;
-    private MyDrawPanel myDrawPanel1;
+    private MyDrawPanel myDrawPanel;
     private JLabel score;
     private JLabel currentMessage;
 
@@ -55,7 +55,7 @@ public class GameDialog extends JDialog implements GameNotifications {
         config = new GameConfig((byte)3,(byte)4,(byte)3,"Adam","Ewa");
 
         GameEngine game = new GameEngine(this, config);
-        myDrawPanel1 = new MyDrawPanel(game);
+        myDrawPanel = new MyDrawPanel(game);
 
        //todo:  myDrawPanel1.addActionListener(); Finish()
     }
