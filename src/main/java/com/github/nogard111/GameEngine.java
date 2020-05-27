@@ -21,8 +21,8 @@ public class GameEngine implements IGameEngine {
   public GameEngine(final GameNotifications notificationPresenter, GameConfig config) {
     notificationsPresenter = notificationPresenter;
 
-    String playerOName = config.playerO;
-    String playerXName = config.playerX;
+    String playerOName = config.playerOName;
+    String playerXName = config.playerXName;
     sizeX = config.columnSize;
     sizeY = config.rowSize;
     lenToWin = config.lenToWin;
@@ -123,10 +123,8 @@ public class GameEngine implements IGameEngine {
     WinRule[] winRules = collection.toArray(new WinRule[collection.size()]);
 
     //check winner
-    for (FieldType playerType : players.keySet()) {
-      if (BoardHelper.IsPlayerAWinner(winRules, playerType, fields)) {
-        return new FieldType[]{playerType};
-      }
+    if (BoardHelper.IsPlayerAWinner(winRules, currentPlayer, fields)) {
+      return new FieldType[]{currentPlayer};
     }
 
     //all filled -> tie

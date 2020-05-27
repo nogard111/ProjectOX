@@ -7,12 +7,12 @@ public class Logger4j implements ILogger {
   protected static final Logger logger = LogManager.getLogger();
 
   @Override
-  public void LogInfo(String message) {
+  public void logInfo(String message) {
     logger.info(message);
   }
 
   @Override
-  public void LogError(String message, Throwable throwable) {
+  public void logError(String message, Throwable throwable) {
     logger.error(message, throwable);
   }
 }

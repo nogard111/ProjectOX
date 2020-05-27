@@ -16,6 +16,9 @@ public class BoardDrawPanel extends JPanel {
 
     setBorder(BorderFactory.createLineBorder(Color.black));
 
+    // I don't think that a better way is for UI to decide
+    // (execute business rules if you can/cannot place symbol somewhere or replace symbol)
+    // rules of the game are business logic - it can change and UI should not care
     addMouseListener(new MouseAdapter() {
 
       public void mousePressed(MouseEvent e) {
@@ -57,8 +60,14 @@ public class BoardDrawPanel extends JPanel {
         break;
       case X:
         g.setColor(Color.RED);
-        g.drawLine(field.xPos * width, field.yPos * height, (field.xPos + 1) * width, (field.yPos + 1) * height);
-        g.drawLine(field.xPos * width, (field.yPos + 1) * height, (field.xPos + 1) * width, (field.yPos) * height);
+        g.drawLine(field.xPos * width,
+                field.yPos * height,
+                (field.xPos + 1) * width,
+                (field.yPos + 1) * height);
+        g.drawLine(field.xPos * width,
+                (field.yPos + 1) * height,
+                (field.xPos + 1) * width,
+                (field.yPos) * height);
         break;
 
     }

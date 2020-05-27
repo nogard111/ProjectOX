@@ -30,35 +30,23 @@ public class ConfigLoader implements IConfigLoader {
         var columnSize = scanner.nextByte();
         System.out.println("Board size rows:");
         var rowSize = scanner.nextByte();
-        System.out.println("Symbols in row to win:");
-        var rowToWin = scanner.nextByte();
+        System.out.println("Symbols in line to win:");
+        var symbolsInLineToWin = scanner.nextByte();
 
-        if (columnSize > 20 || rowSize > 20 || (rowToWin > rowSize && rowToWin > columnSize)) {
+        if (columnSize > 20 || rowSize > 20 || (symbolsInLineToWin > rowSize && symbolsInLineToWin > columnSize)) {
           throw new YouGotToBeKiddingException();
         }
 
         System.out.println("Player O Name:");
-        var playerO = scanner.next();
+        var playerOName = scanner.next();
         System.out.println("Player X Name:");
-        var playerX = scanner.next();
+        var playerXName = scanner.next();
 
         System.out.println("Who start (o/x)? :");
         var playerToStartStr = scanner.next();
-        FieldType playerToStart;
-        switch (playerToStartStr) {
-          case "o":
-          case "O":
-            playerToStart = FieldType.O;
-            break;
-          case "X":
-          case "x":
-            playerToStart = FieldType.X;
-            break;
-          default:
-            throw new YouGotToBeKiddingException();
-        }
+        FieldType playerToStart = convertToFieldType(playerToStartStr);
 
-        config = new GameConfig(columnSize, rowSize, rowToWin, playerO, playerX, playerToStart);
+        config = new GameConfig(columnSize, rowSize, symbolsInLineToWin, playerOName, playerXName, playerToStart);
         ready = true;
       } catch (NoSuchElementException exception) {
         System.out.println("Sorry you typed something wrong ...");
@@ -67,6 +55,23 @@ public class ConfigLoader implements IConfigLoader {
       }
     }
     return config;
+  }
+
+  FieldType convertToFieldType(String playerToStartStr) throws NoSuchElementException {
+    FieldType playerToStart;
+    switch (playerToStartStr) {
+      case "o":
+      case "O":
+        playerToStart = FieldType.O;
+        break;
+      case "x":
+      case "X":
+        playerToStart = FieldType.X;
+        break;
+      default:
+        throw new NoSuchElementException();
+    }
+    return playerToStart;
   }
 }
 
