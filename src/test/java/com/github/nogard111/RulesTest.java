@@ -14,13 +14,13 @@ public class RulesTest {
     public void verticalRule()
     {
         var rule = BoardHelper.getStandardRules(3).get(BoardHelper.WinRuleType.VERTICAL);
-        Field[][] fields = BoardHelper.GenerateFields(3,3);
+        var board = new Board(3,3);
 
-        fields[0][0].type = FieldType.O;
-        fields[1][0].type = FieldType.O;
-        fields[2][0].type = FieldType.O;
+        board.trySetFieldSymbol(FieldType.O, 0, 0);
+        board.trySetFieldSymbol(FieldType.O, 0, 1);
+        board.trySetFieldSymbol(FieldType.O, 0, 2);
 
-        assertTrue(BoardHelper.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O, fields));
+        assertTrue(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 
     /**
@@ -31,15 +31,14 @@ public class RulesTest {
     {
         var rule = BoardHelper.getStandardRules(3).get(BoardHelper.WinRuleType.VERTICAL);
 
-        Field[][] fields = BoardHelper.GenerateFields(3,3);
+        var board = new Board(3,3);
+
+        board.trySetFieldSymbol(FieldType.O, 0, 0);
+        board.trySetFieldSymbol(FieldType.O, 1, 0);
+        board.trySetFieldSymbol(FieldType.O, 2, 0);
 
 
-        fields[0][0].type = FieldType.O;
-        fields[0][1].type = FieldType.O;
-        fields[0][2].type = FieldType.O;
-
-
-        assertFalse(BoardHelper.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O, fields));
+        assertFalse(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 
     /**
@@ -50,13 +49,15 @@ public class RulesTest {
     {
         var rule = BoardHelper.getStandardRules(3).get(BoardHelper.WinRuleType.HORIZONTAL);
 
-        Field[][] fields = BoardHelper.GenerateFields(3,3);
 
-        fields[0][0].type = FieldType.O;
-        fields[0][1].type = FieldType.O;
-        fields[0][2].type = FieldType.O;
+        var board = new Board(3,3);
 
-        assertTrue(BoardHelper.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O, fields));
+        board.trySetFieldSymbol(FieldType.O, 0, 0);
+        board.trySetFieldSymbol(FieldType.O, 1, 0);
+        board.trySetFieldSymbol(FieldType.O, 2, 0);
+
+
+        assertTrue(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 
 
@@ -68,12 +69,12 @@ public class RulesTest {
     {
         var rule = BoardHelper.getStandardRules(3).get(BoardHelper.WinRuleType.HORIZONTAL);
 
-        Field[][] fields = BoardHelper.GenerateFields(3,3);
+        var board = new Board(3,3);
 
-        fields[0][0].type = FieldType.O;
-        fields[1][0].type = FieldType.O;
-        fields[2][0].type = FieldType.O;
+        board.trySetFieldSymbol(FieldType.O, 0, 0);
+        board.trySetFieldSymbol(FieldType.O, 0, 1);
+        board.trySetFieldSymbol(FieldType.O, 0, 2);
 
-        assertFalse(BoardHelper.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O, fields));
+        assertFalse(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 }

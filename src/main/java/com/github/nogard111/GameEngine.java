@@ -1,17 +1,12 @@
 package com.github.nogard111;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 public class GameEngine implements IGameEngine {
   private int gamesToPlay = 3;
   private final int sizeY;
   private final int sizeX;
   private final int lenToWin;
-  private final Field[][] fields;
-  private FieldType currentPlayer;
-  private FieldType startPlayer;
-  private final Map<FieldType, Player> players = new EnumMap<>(FieldType.class);
+  private final Board board;
+  private Players players;
   private final GameNotifications notificationsPresenter;
 
   /**
@@ -21,23 +16,14 @@ public class GameEngine implements IGameEngine {
   public GameEngine(final GameNotifications notificationPresenter, GameConfig config) {
     notificationsPresenter = notificationPresenter;
 
-    String playerOName = config.playerOName;
-    String playerXName = config.playerXName;
     sizeX = config.columnSize;
     sizeY = config.rowSize;
     lenToWin = config.lenToWin;
-    startPlayer = config.startingPlayer;
-    currentPlayer = config.startingPlayer;
 
-    players.put(FieldType.O, new Player(playerOName));
-    players.put(FieldType.X, new Player(playerXName));
+    players = new Players(config.playerOName,config.playerXName,config.startingPlayerType);
 
-    fields = BoardHelper.GenerateFields(sizeY, sizeX);
+    board = new Board(sizeY, sizeX);
 
-  }
-
-  private static FieldType getOppositePlayer(FieldType currentPlayer) {
-    return currentPlayer == FieldType.O ? FieldType.X : FieldType.O;
   }
 
   /**
@@ -47,12 +33,12 @@ public class GameEngine implements IGameEngine {
    */
   @Override
   public boolean clicked(float x, float y) {
-    Field selected = getField(x, y);
-    if (selected.type == FieldType.NONE) {
-      selected.type = currentPlayer;
+    if (board.trySetFieldSymbol(players.getCurrentPlayer().symbol,
+            (int) (x * sizeX),
+            (int) (y * sizeY))) {
       var winners = getWinners();
       if (winners == null) {
-        switchPlayer();
+        players.switchPlayer();
         displayWhoShouldMove();
       } else {
         finishStage(winners);
@@ -63,96 +49,60 @@ public class GameEngine implements IGameEngine {
   }
 
   void displayWhoShouldMove() {
-    notificationsPresenter.displayMessage("Make your move " + players.get(currentPlayer).name);
+    notificationsPresenter.displayMessage("Make your move " + players.getCurrentPlayer().name);
   }
 
-  private void finishStage(FieldType[] winners) {
+  private void finishStage(Player[] winners) {
     String winnerMessage;
     if (winners.length == 2) {
-      for (var winner : winners) {
-        ++players.get(winner).score;
-      }
       winnerMessage = "It's Tie";
+      for (Player winner : winners) {
+        winner.UpdateResultTie();
+      }
     } else {
-      var winner = players.get(winners[0]);
-      winner.score += 3;
-      winnerMessage = winner.name + " wins!";
+      players.getCurrentPlayer().updateScoreWin();
+      winnerMessage = players.getCurrentPlayer().name + " wins!";
     }
 
     showScore();
 
     gamesToPlay--;
     if (gamesToPlay == 0) {
-      notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : " + getWinner());
+      notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : " + players.getPlayersStringWithHighestScore());
     } else {
-      clearCurrentStage();
+      board.clearBoard();
       notificationsPresenter.showWinnerMessage(winnerMessage);
     }
 
-    startPlayer = getOppositePlayer(startPlayer);
-    currentPlayer = startPlayer;
+    players.finishStage();
     displayWhoShouldMove();
   }
 
   private void showScore() {
-    var score = players.get(FieldType.O).getScore() + " " + players.get(FieldType.X).getScore();
+    var score = players.getAllPlayersScore();
     notificationsPresenter.displayScore(score);
   }
 
-  private void clearCurrentStage() {
-    for (int y = 0; y < fields.length; y++) {
-      var row = fields[y];
-      for (int x = 0; x < row.length; x++) {
-        row[x].type = FieldType.NONE;
-      }
-    }
-  }
 
-  private String getWinner() {
-    var player1 = players.get(FieldType.O);
-    var player2 = players.get(FieldType.X);
 
-    if (player1.score == player2.score) {
-      return "NONE !";
-    }
-    return player1.score > player2.score ? player1.name : player2.name;
-  }
 
-  private FieldType[] getWinners() {
+  private Player[] getWinners() {
     var collection = BoardHelper.getStandardRules(lenToWin).values();
     WinRule[] winRules = collection.toArray(new WinRule[collection.size()]);
 
     //check winner
-    if (BoardHelper.IsPlayerAWinner(winRules, currentPlayer, fields)) {
-      return new FieldType[]{currentPlayer};
+    if (board.IsPlayerAWinner(winRules, players.getCurrentPlayer().symbol)) {
+      return new Player[]{players.getCurrentPlayer()};
     }
 
     //all filled -> tie
-    boolean emptyFieldExists = false;
-    for (int y = 0; y < fields.length; y++) {
-      var row = fields[y];
-      for (int x = 0; x < row.length; x++) {
-        if (row[x].type == FieldType.NONE) {
-          emptyFieldExists = true;
-          break;
-        }
-      }
-      if (emptyFieldExists) break;
-    }
-    return emptyFieldExists ? null : new FieldType[]{FieldType.X, FieldType.O};
-  }
-
-  private Field getField(float x, float y) {
-    return fields[(int) (y * sizeY)][(int) (x * sizeX)];
-  }
-
-  private void switchPlayer() {
-    currentPlayer = getOppositePlayer(currentPlayer);
+    boolean emptyFieldExists = board.areAllFieldsFilled();
+    return emptyFieldExists ? null : players.getPlayers();
   }
 
   @Override
   public Field[][] getFields() {
-    return fields;
+    return board.getFields();
   }
 
   @Override

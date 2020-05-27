@@ -7,14 +7,14 @@ public class GameConfig {
   public final String playerOName;
   public final String playerXName;
   public final byte lenToWin;
-  public final FieldType startingPlayer;
+  public final FieldType startingPlayerType;
 
-  public GameConfig(byte columnSize, byte rowSize, byte lenToWin, String playerOName, String playerXName, FieldType startingPlayer) {
+  public GameConfig(byte columnSize, byte rowSize, byte lenToWin, String playerOName, String playerXName, FieldType startingPlayerType) {
     this.columnSize = columnSize;
     this.rowSize = rowSize;
     this.playerOName = playerOName;
     this.playerXName = playerXName;
     this.lenToWin = lenToWin;
-    this.startingPlayer = startingPlayer;
+    this.startingPlayerType = startingPlayerType;
   }
 }
