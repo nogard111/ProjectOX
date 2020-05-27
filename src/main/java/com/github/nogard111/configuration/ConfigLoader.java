@@ -44,15 +44,19 @@ public class ConfigLoader implements IConfigLoader {
 
                 System.out.println("Who start (o/x)? :");
                 var playerToStartStr = scanner.next();
-                FieldType playerToStart = FieldType.NONE;
-                if (playerToStartStr.compareToIgnoreCase("o") == 0) {
-                    playerToStart = FieldType.O;
-                }
-                if (playerToStartStr.compareToIgnoreCase("x") == 0) {
-                    playerToStart = FieldType.X;
-                }
-                if (playerToStart == FieldType.NONE) {
-                    throw new YouGotToBeKiddingException();
+                FieldType playerToStart;
+                switch (playerToStartStr)
+                {
+                    case "o":
+                    case "O":
+                        playerToStart = FieldType.O;
+                        break;
+                    case "X":
+                    case "x":
+                        playerToStart = FieldType.X;
+                        break;
+                    default:
+                        throw new YouGotToBeKiddingException();
                 }
 
                 config = new GameConfig(columnSize, rowSize, rowToWin, playerO, playerX, playerToStart);

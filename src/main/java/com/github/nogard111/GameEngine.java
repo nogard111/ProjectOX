@@ -1,6 +1,6 @@
 package com.github.nogard111;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class GameEngine implements IGameEngine {
@@ -11,7 +11,7 @@ public class GameEngine implements IGameEngine {
     private Field[][] fields;
     private FieldType currentPlayer;
     private FieldType startPlayer;
-    private Map<FieldType, Player> players = new HashMap<>();
+    private Map<FieldType, Player> players = new EnumMap<>(FieldType.class);
     private GameNotifications notificationsPresenter;
 
     /**
@@ -46,12 +46,12 @@ public class GameEngine implements IGameEngine {
         Field selected = getField(x, y);
         if (selected.type == FieldType.NONE) {
             selected.type = currentPlayer;
-            var winners = GetWinners();
-            if (winners != null) {
-                finishStage(winners);
-            } else {
+            var winners = getWinners();
+            if (winners == null) {
                 switchPlayer();
                 displayWhoShouldMove();
+            } else {
+                finishStage(winners);
             }
             return true;
         }
@@ -80,7 +80,7 @@ public class GameEngine implements IGameEngine {
 
         gamesToPlay--;
         if (gamesToPlay == 0) {
-            notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : " + GetWinner());
+            notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : " + getWinner());
         } else {
             clearCurrentStage();
             notificationsPresenter.showWinnerMessage(winnerMessage);
@@ -105,7 +105,7 @@ public class GameEngine implements IGameEngine {
         }
     }
 
-    private String GetWinner() {
+    private String getWinner() {
         var player1 = players.get(FieldType.O);
         var player2 = players.get(FieldType.X);
 
@@ -116,7 +116,7 @@ public class GameEngine implements IGameEngine {
     }
 
 
-    private FieldType[] GetWinners() {
+    private FieldType[] getWinners() {
         var collection = BoardHelper.getStandardRules(lenToWin).values();
         WinRule winRules[] = collection.toArray(new WinRule[collection.size()]);
 

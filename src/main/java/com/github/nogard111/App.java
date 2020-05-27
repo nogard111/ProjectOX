@@ -1,10 +1,7 @@
 package com.github.nogard111;
 
-import com.github.nogard111.GameDialog;
-import org.apache.logging.log4j.core.impl.Log4jLogEvent;
-
 /**
- * OX GAME
+ * OX GAME.
  */
 public class App {
     public static void main(String[] args) {

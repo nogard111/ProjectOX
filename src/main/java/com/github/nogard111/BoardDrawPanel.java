@@ -2,16 +2,16 @@ package com.github.nogard111;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
-public class MyDrawPanel extends JPanel {
+public class BoardDrawPanel extends JPanel {
 
     IGameEngine gameEngine;
     private int height = 30;
     private int width = 30;
 
-    public MyDrawPanel(IGameEngine engine) {
+    public BoardDrawPanel(IGameEngine engine) {
         gameEngine = engine;
 
         setBorder(BorderFactory.createLineBorder(Color.black));
