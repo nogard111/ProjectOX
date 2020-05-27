@@ -53,13 +53,16 @@ public class MyDrawPanel extends JPanel {
                 break;
             case O:
                 g.setColor(Color.GREEN);
-                g.fillRect(field.xPos * width, field.yPos * height, width, height);
+                g.drawOval(field.xPos * width, field.yPos * height, width, height);
                 break;
             case X:
                 g.setColor(Color.RED);
-                g.fillRect(field.xPos * width, field.yPos * height, width, height);
+                g.drawLine(field.xPos * width, field.yPos * height, (field.xPos + 1) * width, (field.yPos + 1) * height);
+                g.drawLine(field.xPos * width, (field.yPos + 1) * height, (field.xPos + 1) * width, (field.yPos) * height);
                 break;
 
         }
+        g.setColor(Color.BLACK);
+        g.drawRect(field.xPos * width, field.yPos * height, width, height);
     }
 }
