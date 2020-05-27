@@ -3,16 +3,16 @@ package com.github.nogard111.configuration;
 import com.github.nogard111.FieldType;
 import com.github.nogard111.GameConfig;
 import com.github.nogard111.YouGotToBeKiddingException;
+import com.github.nogard111.logging.DefaultLogger;
 
-import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ConfigLoader implements IConfigLoader {
-  private final InputStream stream;
+  private final StreamProvider streamProvider;
 
-  public ConfigLoader(InputStream in) {
-    stream = in;
+  public ConfigLoader(StreamProvider in) {
+    streamProvider = in;
   }
 
 
@@ -23,7 +23,7 @@ public class ConfigLoader implements IConfigLoader {
     boolean ready = false;
     while (!ready) {
       try {
-        var scanner = new Scanner(stream);
+        var scanner = new Scanner(streamProvider.getStream());
         System.out.println("You need do everything correctly in one go");
 
         System.out.println("Board size columns:");
@@ -44,7 +44,7 @@ public class ConfigLoader implements IConfigLoader {
 
         System.out.println("Who start (o/x)? :");
         var playerToStartStr = scanner.next();
-        FieldType playerToStart = convertToFieldType(playerToStartStr);
+        FieldType playerToStart = FieldType.convertToFieldType(playerToStartStr);
 
         config = new GameConfig(columnSize, rowSize, symbolsInLineToWin, playerOName, playerXName, playerToStart);
         ready = true;
@@ -54,24 +54,9 @@ public class ConfigLoader implements IConfigLoader {
         System.out.println("Sorry your input parameters are not very wise...");
       }
     }
-    return config;
-  }
 
-  FieldType convertToFieldType(String playerToStartStr) throws NoSuchElementException {
-    FieldType playerToStart;
-    switch (playerToStartStr) {
-      case "o":
-      case "O":
-        playerToStart = FieldType.O;
-        break;
-      case "x":
-      case "X":
-        playerToStart = FieldType.X;
-        break;
-      default:
-        throw new NoSuchElementException();
-    }
-    return playerToStart;
+    DefaultLogger.getLogger().logInfo("Configuration success:" + config.toString());
+    return config;
   }
 }
 

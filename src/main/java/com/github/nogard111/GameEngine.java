@@ -1,5 +1,7 @@
 package com.github.nogard111;
 
+import com.github.nogard111.logging.DefaultLogger;
+
 public class GameEngine implements IGameEngine {
   private int gamesToPlay = 3;
   private final int sizeY;
@@ -7,23 +9,38 @@ public class GameEngine implements IGameEngine {
   private final int lenToWin;
   private final Board board;
   private Players players;
-  private final GameNotifications notificationsPresenter;
+  private GameNotifications notificationsPresenter = new GameNotifications() {
+    @Override
+    public void displayMessage(String message) {
+
+    }
+
+    @Override
+    public void displayScore(String message) {
+
+    }
+
+    @Override
+    public void showWinnerMessage(String winnerMessage) {
+
+    }
+
+    @Override
+    public void showFinalWinnerAndClose(String winnerMessage) {
+
+    }
+  };
 
   /**
-   * @param notificationPresenter
    * @param config
    */
-  public GameEngine(final GameNotifications notificationPresenter, GameConfig config) {
-    notificationsPresenter = notificationPresenter;
-
+  public GameEngine(GameConfig config) {
     sizeX = config.columnSize;
     sizeY = config.rowSize;
     lenToWin = config.lenToWin;
 
     players = new Players(config.playerOName,config.playerXName,config.startingPlayerType);
-
     board = new Board(sizeY, sizeX);
-
   }
 
   /**
@@ -33,6 +50,8 @@ public class GameEngine implements IGameEngine {
    */
   @Override
   public boolean clicked(float x, float y) {
+    var current = players.getCurrentPlayer();
+    DefaultLogger.getLogger().logInfo("Player "+current.name +" trying to set field at: "+x+" "+y+ " ");
     if (board.trySetFieldSymbol(players.getCurrentPlayer().symbol,
             (int) (x * sizeX),
             (int) (y * sizeY))) {
@@ -68,7 +87,9 @@ public class GameEngine implements IGameEngine {
 
     gamesToPlay--;
     if (gamesToPlay == 0) {
-      notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : " + players.getPlayersStringWithHighestScore());
+      String finalWinnerMessage = "FINAL WINNER IS : " + players.getPlayersStringWithHighestScore();
+      DefaultLogger.getLogger().logInfo(finalWinnerMessage);
+      notificationsPresenter.showFinalWinnerAndClose(finalWinnerMessage);
     } else {
       board.clearBoard();
       notificationsPresenter.showWinnerMessage(winnerMessage);
@@ -82,9 +103,6 @@ public class GameEngine implements IGameEngine {
     var score = players.getAllPlayersScore();
     notificationsPresenter.displayScore(score);
   }
-
-
-
 
   private Player[] getWinners() {
     var collection = BoardHelper.getStandardRules(lenToWin).values();
@@ -106,7 +124,9 @@ public class GameEngine implements IGameEngine {
   }
 
   @Override
-  public void onStart() {
+  public void onStart(final GameNotifications notificationPresenter) {
+    this.notificationsPresenter = notificationPresenter;
+    DefaultLogger.getLogger().logInfo("Game started");
     showScore();
     displayWhoShouldMove();
   }

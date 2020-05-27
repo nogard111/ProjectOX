@@ -1,7 +1,5 @@
 package com.github.nogard111;
 
-import com.github.nogard111.configuration.ConfigLoader;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,7 +13,8 @@ public class GameDialog extends JDialog implements GameNotifications {
 
   private IGameEngine game;
 
-  public GameDialog() {
+  public GameDialog(IGameEngine game) {
+    this.game = game;
     setupUI();
     setContentPane(contentPane);
     setModal(true);
@@ -25,7 +24,7 @@ public class GameDialog extends JDialog implements GameNotifications {
 
       @Override
       public void windowOpened(WindowEvent e) {
-        game.onStart();
+        game.onStart(gameDialog);
       }
 
       @Override
@@ -93,12 +92,6 @@ public class GameDialog extends JDialog implements GameNotifications {
 
   private void createUIComponents() {
 
-    var configLoader = new ConfigLoader(System.in);
-    var config = configLoader.getConfigFromUser();
-
-    //config = new GameConfig((byte) 3, (byte) 4, (byte) 3, "Adam", "Ewa", FieldType.O);
-
-    game = new GameEngine(this, config);
     boardDrawPanel = new BoardDrawPanel(game);
   }
 

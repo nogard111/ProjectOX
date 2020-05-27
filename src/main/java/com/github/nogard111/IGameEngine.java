@@ -10,5 +10,5 @@ public interface IGameEngine {
 
   Field[][] getFields();
 
-  void onStart();
+  void onStart(GameNotifications gameDialog);
 }

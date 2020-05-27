@@ -53,7 +53,7 @@ public class Board {
             }
           }
           if (win) {
-            System.out.println("win by " + rule.name);
+            System.out.println(playerType.toString() + " win by " + rule.name);
             return true;
           }
         }
