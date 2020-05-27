@@ -1,16 +1,25 @@
 package com.github.nogard111;
 
+import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class ConfigLoader {
+public class ConfigLoader implements IConfigLoader {
+    private InputStream stream;
+
+    public ConfigLoader(InputStream in) {
+        stream = in;
+    }
+
+
+    @Override
     public GameConfig getConfigFromUser() {
         GameConfig config = null;
         System.out.println("Let's Start with some little config :)");
         boolean ready = false;
         while (!ready) {
             try {
-                var scanner = new Scanner(System.in);
+                var scanner = new Scanner(stream);
                 System.out.println("You need do everything correctly in one go");
 
                 System.out.println("Board size columns:");

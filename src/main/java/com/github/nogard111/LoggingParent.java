@@ -5,8 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 
 public class LoggingParent {
-
-    // The name of this Logger will be "org.apache.logging.Parent"
     protected static final Logger parentLogger = LogManager.getLogger();
 
     private Logger logger = parentLogger;
