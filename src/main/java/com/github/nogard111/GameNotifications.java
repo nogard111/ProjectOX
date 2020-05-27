@@ -1,11 +1,11 @@
 package com.github.nogard111;
 
 public interface GameNotifications {
-    void displayMessage(String message);
+  void displayMessage(String message);
 
-    void displayScore(String message);
+  void displayScore(String message);
 
-    void showWinnerMessage(String winnerMessage);
+  void showWinnerMessage(String winnerMessage);
 
-    void showFinalWinnerAndClose(String winnerMessage);
+  void showFinalWinnerAndClose(String winnerMessage);
 }

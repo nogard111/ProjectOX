@@ -2,169 +2,158 @@ package com.github.nogard111;
 
 import com.github.nogard111.configuration.ConfigLoader;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class GameDialog extends JDialog implements GameNotifications {
-    private JPanel contentPane;
-    private JButton buttonCancel;
-    private BoardDrawPanel boardDrawPanel;
-    private JLabel score;
-    private JLabel currentMessage;
+  private JPanel contentPane;
+  private JButton buttonCancel;
+  private BoardDrawPanel boardDrawPanel;
+  private JLabel score;
+  private JLabel currentMessage;
 
-    private IGameEngine game;
+  private IGameEngine game;
 
-    public GameDialog() {
-        setupUI();
-        setContentPane(contentPane);
-        setModal(true);
+  public GameDialog() {
+    setupUI();
+    setContentPane(contentPane);
+    setModal(true);
 
-        var gameDialog = this;
-        gameDialog.addWindowListener(new WindowListener() {
+    var gameDialog = this;
+    gameDialog.addWindowListener(new WindowListener() {
 
-            @Override
-            public void windowOpened(WindowEvent e) {
-                game.onStart();
-            }
+      @Override
+      public void windowOpened(WindowEvent e) {
+        game.onStart();
+      }
 
-            @Override
-            public void windowClosing(WindowEvent e) {
+      @Override
+      public void windowClosing(WindowEvent e) {
 
-            }
+      }
 
-            @Override
-            public void windowClosed(WindowEvent e) {
+      @Override
+      public void windowClosed(WindowEvent e) {
 
-            }
+      }
 
-            @Override
-            public void windowIconified(WindowEvent e) {
+      @Override
+      public void windowIconified(WindowEvent e) {
 
-            }
+      }
 
-            @Override
-            public void windowDeiconified(WindowEvent e) {
+      @Override
+      public void windowDeiconified(WindowEvent e) {
 
-            }
+      }
 
-            @Override
-            public void windowActivated(WindowEvent e) {
+      @Override
+      public void windowActivated(WindowEvent e) {
 
-            }
+      }
 
-            @Override
-            public void windowDeactivated(WindowEvent e) {
+      @Override
+      public void windowDeactivated(WindowEvent e) {
 
-            }
-        });
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+      }
+    });
+    buttonCancel.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        onCancel();
+      }
+    });
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+    // call onCancel() when cross is clicked
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        onCancel();
+      }
+    });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-
-    private void onOK() {
-        // add your code here
-        dispose();
-    }
-
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
-
-    private void createUIComponents() {
-
-        var configLoader = new ConfigLoader(System.in);
-        var config = configLoader.getConfigFromUser();
-
-        //config = new GameConfig((byte) 3, (byte) 4, (byte) 3, "Adam", "Ewa", FieldType.O);
-
-        game = new GameEngine(this, config);
-        boardDrawPanel = new BoardDrawPanel(game);
-    }
-
-    public void Finish() {
-        onOK();
-    }
-
-    @Override
-    public void displayMessage(final String message) {
-        currentMessage.setText(message);
-    }
-
-    @Override
-    public void displayScore(final String message) {
-        score.setText(message);
-    }
-
-    @Override
-    public void showWinnerMessage(final String winnerMessage) {
-        JOptionPane.showMessageDialog(this, winnerMessage);
-    }
-
-    @Override
-    public void showFinalWinnerAndClose(final String winnerMessage) {
-        JOptionPane.showMessageDialog(this, winnerMessage);
-        Finish();
-    }
-
-    /**
-     * Method generated by Me because IntelliJ IDEA GUI Designer Have issues !
-     *
-     * @noinspection ALL
-     */
-    private void setupUI() {
-        createUIComponents();
-        contentPane = new JPanel(new BorderLayout());
-
-        var bottomPanel = new JPanel(new BorderLayout());
-
-        buttonCancel = new JButton();
-        buttonCancel.setText("I dont care ! Quit");
-        currentMessage = new JLabel();
-        currentMessage.setText("Label");
-        score = new JLabel();
-        score.setText("Label");
-
-        var messagePanel = new JPanel(new BorderLayout());
-        messagePanel.add(currentMessage, BorderLayout.EAST);
-        messagePanel.add(score, BorderLayout.WEST);
-
-        bottomPanel.add(buttonCancel, BorderLayout.EAST);
-        bottomPanel.add(messagePanel, BorderLayout.CENTER);
+    // call onCancel() on ESCAPE
+    contentPane.registerKeyboardAction(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        onCancel();
+      }
+    }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+  }
 
 
-        contentPane.add(bottomPanel, BorderLayout.SOUTH);
-        contentPane.add(boardDrawPanel, BorderLayout.CENTER);
-    }
+  private void onOK() {
+    // add your code here
+    dispose();
+  }
+
+  private void onCancel() {
+    // add your code here if necessary
+    dispose();
+  }
+
+  private void createUIComponents() {
+
+    var configLoader = new ConfigLoader(System.in);
+    var config = configLoader.getConfigFromUser();
+
+    //config = new GameConfig((byte) 3, (byte) 4, (byte) 3, "Adam", "Ewa", FieldType.O);
+
+    game = new GameEngine(this, config);
+    boardDrawPanel = new BoardDrawPanel(game);
+  }
+
+  public void Finish() {
+    onOK();
+  }
+
+  @Override
+  public void displayMessage(final String message) {
+    currentMessage.setText(message);
+  }
+
+  @Override
+  public void displayScore(final String message) {
+    score.setText(message);
+  }
+
+  @Override
+  public void showWinnerMessage(final String winnerMessage) {
+    JOptionPane.showMessageDialog(this, winnerMessage);
+  }
+
+  @Override
+  public void showFinalWinnerAndClose(final String winnerMessage) {
+    JOptionPane.showMessageDialog(this, winnerMessage);
+    Finish();
+  }
+
+  /**
+   * Method generated by Me because IntelliJ IDEA GUI Designer Have issues !
+   *
+   * @noinspection ALL
+   */
+  private void setupUI() {
+    createUIComponents();
+    contentPane = new JPanel(new BorderLayout());
+
+    var bottomPanel = new JPanel(new BorderLayout());
+
+    buttonCancel = new JButton();
+    buttonCancel.setText("I dont care ! Quit");
+    currentMessage = new JLabel();
+    currentMessage.setText("Label");
+    score = new JLabel();
+    score.setText("Label");
+
+    var messagePanel = new JPanel(new BorderLayout());
+    messagePanel.add(currentMessage, BorderLayout.EAST);
+    messagePanel.add(score, BorderLayout.WEST);
+
+    bottomPanel.add(buttonCancel, BorderLayout.EAST);
+    bottomPanel.add(messagePanel, BorderLayout.CENTER);
+
+
+    contentPane.add(bottomPanel, BorderLayout.SOUTH);
+    contentPane.add(boardDrawPanel, BorderLayout.CENTER);
+  }
 }
