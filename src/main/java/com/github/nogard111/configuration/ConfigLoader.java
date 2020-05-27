@@ -1,4 +1,8 @@
-package com.github.nogard111;
+package com.github.nogard111.configuration;
+
+import com.github.nogard111.FieldType;
+import com.github.nogard111.GameConfig;
+import com.github.nogard111.YouGotToBeKiddingException;
 
 import java.io.InputStream;
 import java.util.NoSuchElementException;
@@ -39,7 +43,23 @@ public class ConfigLoader implements IConfigLoader {
                 System.out.println("Player X Name:");
                 var playerX = scanner.next();
 
-                config = new GameConfig(columnSize, rowSize, rowToWin, playerO, playerX);
+                System.out.println("Who start (o/x)? :");
+                var playerToStartStr = scanner.next();
+                FieldType playerToStart = FieldType.NONE;
+                if(playerToStartStr.compareToIgnoreCase("o") == 0)
+                {
+                    playerToStart = FieldType.O;
+                }
+                if(playerToStartStr.compareToIgnoreCase("x") == 0)
+                {
+                    playerToStart = FieldType.X;
+                }
+                if(playerToStart == FieldType.NONE)
+                {
+                    throw new YouGotToBeKiddingException();
+                }
+
+                config = new GameConfig(columnSize, rowSize, rowToWin, playerO, playerX, playerToStart);
                 ready = true;
             } catch (NoSuchElementException exception) {
                 System.out.println("Sorry you typed something wrong ...");

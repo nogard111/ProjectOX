@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 //Mockito.when(mockList.size()).thenReturn(100);
 
 public class GameEngineTest {
-    static GameConfig config = new GameConfig((byte)3,(byte)4,(byte)3,"Adam","Ewa");
+    static GameConfig config = new GameConfig((byte)3,(byte)4,(byte)3,"Adam","Ewa",FieldType.O);
 
     /**
      * ClickTest

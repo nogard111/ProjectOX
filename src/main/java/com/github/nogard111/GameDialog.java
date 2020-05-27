@@ -1,5 +1,7 @@
 package com.github.nogard111;
 
+import com.github.nogard111.configuration.ConfigLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,11 +13,51 @@ public class GameDialog extends JDialog implements GameNotifications {
     private JLabel score;
     private JLabel currentMessage;
 
+    private IGameEngine game;
+
     public GameDialog() {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
 
+        var gameDialog = this;
+        gameDialog.addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                game.onStart();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -38,6 +80,7 @@ public class GameDialog extends JDialog implements GameNotifications {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+
     private void onOK() {
         // add your code here
         dispose();
@@ -53,12 +96,10 @@ public class GameDialog extends JDialog implements GameNotifications {
         var configLoader = new ConfigLoader(System.in);
         var config = configLoader.getConfigFromUser();
 
-        config = new GameConfig((byte) 3, (byte) 4, (byte) 3, "Adam", "Ewa");
+        //config = new GameConfig((byte) 3, (byte) 4, (byte) 3, "Adam", "Ewa", FieldType.O);
 
-        GameEngine game = new GameEngine(this, config);
+        game = new GameEngine(this, config);
         myDrawPanel = new MyDrawPanel(game);
-
-        //todo:  myDrawPanel1.addActionListener(); Finish()
     }
 
     public void Finish() {
@@ -77,14 +118,12 @@ public class GameDialog extends JDialog implements GameNotifications {
 
     @Override
     public void showWinnerMessage(String winnerMessage) {
-        final JDialog modelDialog = createWinnerDialog(this, winnerMessage);
-        modelDialog.setVisible(true);
+        JOptionPane.showMessageDialog(this, winnerMessage);
     }
 
     @Override
     public void showFinalWinnerAndClose(String winnerMessage) {
-        final JDialog modelDialog = createWinnerDialog(this, winnerMessage);
-        modelDialog.setVisible(true);
+        JOptionPane.showMessageDialog(this, winnerMessage);
         Finish();
     }
 

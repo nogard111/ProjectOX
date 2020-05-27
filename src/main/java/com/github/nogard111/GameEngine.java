@@ -4,16 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameEngine implements IGameEngine {
-    private int GamesToPlay = 3;
+    private int gamesToPlay = 3;
     private int sizeY;
     private int sizeX;
     private int lenToWin;
     private Field[][] fields;
     private FieldType currentPlayer;
+    private FieldType startPlayer;
     private Map<FieldType, Player> players = new HashMap<>();
     private GameNotifications notificationsPresenter;
 
-    public GameEngine(GameNotifications notificationPresenter,GameConfig config) {
+    /**
+     * @param notificationPresenter
+     * @param config
+     */
+    public GameEngine(final GameNotifications notificationPresenter,GameConfig config) {
         notificationsPresenter = notificationPresenter;
 
         String playerOName = config.playerO;
@@ -21,13 +26,14 @@ public class GameEngine implements IGameEngine {
         sizeX = config.columnSize;
         sizeY = config.rowSize;
         lenToWin = config.lenToWin;
+        startPlayer = config.startingPlayer;
+        currentPlayer = config.startingPlayer;
 
         players.put(FieldType.O, new Player(playerOName));
         players.put(FieldType.X, new Player(playerXName));
 
-        fields = BoardHelper.GenerateFields(sizeY,sizeX);
+        fields = BoardHelper.GenerateFields(sizeY, sizeX);
 
-        currentPlayer = FieldType.O;
     }
 
     /**
@@ -49,11 +55,15 @@ public class GameEngine implements IGameEngine {
                 finishStage(winners);
             } else {
                 switchPlayer();
-                notificationsPresenter.displayMessage("Make your move " + players.get(currentPlayer).name);
+                displayWhoShouldMove();
             }
             return true;
         }
         return false;
+    }
+
+    void displayWhoShouldMove() {
+        notificationsPresenter.displayMessage("Make your move " + players.get(currentPlayer).name);
     }
 
 
@@ -70,16 +80,24 @@ public class GameEngine implements IGameEngine {
             winnerMessage = winner.name+ " wins!";
         }
 
-        var score = players.get(FieldType.O).getScore() + " " + players.get(FieldType.X).getScore();
-        notificationsPresenter.displayScore(score);
+        showScore();
 
-        GamesToPlay--;
-        if(GamesToPlay == 0 ) {
+        gamesToPlay--;
+        if(gamesToPlay == 0 ) {
             notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : "+ GetWinner());
         }else {
             clearCurrentStage();
             notificationsPresenter.showWinnerMessage(winnerMessage);
         }
+
+        startPlayer = getOppositePlayer(startPlayer);
+        currentPlayer = startPlayer;
+        displayWhoShouldMove();
+    }
+
+    private void showScore() {
+        var score = players.get(FieldType.O).getScore() + " " + players.get(FieldType.X).getScore();
+        notificationsPresenter.displayScore(score);
     }
 
     private void clearCurrentStage() {
@@ -133,11 +151,21 @@ public class GameEngine implements IGameEngine {
     }
 
     private void switchPlayer() {
-        currentPlayer = currentPlayer == FieldType.O ? FieldType.X : FieldType.O;
+        currentPlayer = getOppositePlayer(currentPlayer);
+    }
+
+    private static FieldType getOppositePlayer(FieldType currentPlayer) {
+        return currentPlayer == FieldType.O ? FieldType.X : FieldType.O;
     }
 
     @Override
     public Field[][] getFields() {
         return fields;
+    }
+
+    @Override
+    public void onStart() {
+        showScore();
+        displayWhoShouldMove();
     }
 }
