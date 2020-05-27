@@ -1,7 +1,5 @@
 package com.github.nogard111;
 
-import com.google.gson.Gson;
-
 public class GameConfig {
 
   public final byte columnSize;
@@ -22,8 +20,11 @@ public class GameConfig {
 
   @Override
   public String toString() {
-    Gson gson = new Gson();
-    String json = gson.toJson(this);
-    return json;
+    return "{\"columnSize\":"+columnSize+
+            ",\"rowSize\":"+rowSize+
+            ",\"playerOName\":\""+playerOName+
+            "\",\"playerXName\":\""+playerXName+
+            "\",\"lenToWin\":"+lenToWin+
+            ",\"startingPlayerType\":\""+startingPlayerType+"\"}";
   }
 }
