@@ -32,7 +32,7 @@ public class GameEngine implements IGameEngine {
   };
 
   /**
-   * @param config
+   * @param config : configuration of the game
    */
   public GameEngine(GameConfig config) {
     sizeX = config.columnSize;
@@ -40,7 +40,7 @@ public class GameEngine implements IGameEngine {
     lenToWin = config.lenToWin;
 
     players = new Players(config.playerOName, config.playerXName, config.startingPlayerType);
-    board = new Board(sizeY, sizeX);
+    board = new Board(sizeX, sizeY);
   }
 
   /**
@@ -76,7 +76,7 @@ public class GameEngine implements IGameEngine {
     if (winners.length == 2) {
       winnerMessage = "It's Tie";
       for (Player winner : winners) {
-        winner.UpdateResultTie();
+        winner.updateResultTie();
       }
     } else {
       players.getCurrentPlayer().updateScoreWin();
@@ -109,7 +109,7 @@ public class GameEngine implements IGameEngine {
     WinRule[] winRules = collection.toArray(new WinRule[collection.size()]);
 
     //check winner
-    if (board.IsPlayerAWinner(winRules, players.getCurrentPlayer().symbol)) {
+    if (board.isPlayerAWinner(winRules, players.getCurrentPlayer().symbol)) {
       return new Player[]{players.getCurrentPlayer()};
     }
 

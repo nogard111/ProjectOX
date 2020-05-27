@@ -16,7 +16,7 @@ public class Player {
     return name + " : " + score + "p ";
   }
 
-  public void UpdateResultTie() {
+  public void updateResultTie() {
     score++;
   }
 

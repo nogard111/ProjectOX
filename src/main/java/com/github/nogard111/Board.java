@@ -5,7 +5,11 @@ import java.awt.*;
 public class Board {
   Field[][] fields;
 
-  public Board(int sizeY, int sizeX) {
+  /**
+   * @param sizeX : board size on X axis
+   * @param sizeY : board size on Y axis
+   */
+  public Board(int sizeX, int sizeY) {
     fields = new Field[sizeY][sizeX];
     for (int y = 0; y < fields.length; y++) {
       var row = fields[y];
@@ -25,7 +29,9 @@ public class Board {
           break;
         }
       }
-      if (emptyFieldExists) break;
+      if (emptyFieldExists) {
+        break;
+      }
     }
     return emptyFieldExists;
   }
@@ -39,7 +45,7 @@ public class Board {
     }
   }
 
-  public boolean IsPlayerAWinner(WinRule[] winRules, FieldType playerType) {
+  public boolean isPlayerAWinner(WinRule[] winRules, FieldType playerType) {
     for (var rule : winRules) {
       for (int y = 0; y < fields.length - rule.limitY; y++) {
         var row = fields[y];

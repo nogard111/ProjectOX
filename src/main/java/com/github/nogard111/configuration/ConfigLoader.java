@@ -4,7 +4,6 @@ import com.github.nogard111.FieldType;
 import com.github.nogard111.GameConfig;
 import com.github.nogard111.YouGotToBeKiddingException;
 import com.github.nogard111.logging.DefaultLogger;
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 

@@ -20,7 +20,7 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 0, 1);
         board.trySetFieldSymbol(FieldType.O, 0, 2);
 
-        assertTrue(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertTrue(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 
     /**
@@ -38,7 +38,7 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 2, 0);
 
 
-        assertFalse(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertFalse(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 
     /**
@@ -57,7 +57,7 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 2, 0);
 
 
-        assertTrue(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertTrue(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 
 
@@ -75,6 +75,6 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 0, 1);
         board.trySetFieldSymbol(FieldType.O, 0, 2);
 
-        assertFalse(board.IsPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertFalse(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
     }
 }

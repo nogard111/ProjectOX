@@ -9,7 +9,12 @@ public class GameConfig {
   public final byte lenToWin;
   public final FieldType startingPlayerType;
 
-  public GameConfig(byte columnSize, byte rowSize, byte lenToWin, String playerOName, String playerXName, FieldType startingPlayerType) {
+  public GameConfig(byte columnSize,
+                    byte rowSize,
+                    byte lenToWin,
+                    String playerOName,
+                    String playerXName,
+                    FieldType startingPlayerType) {
     this.columnSize = columnSize;
     this.rowSize = rowSize;
     this.playerOName = playerOName;
@@ -20,11 +25,11 @@ public class GameConfig {
 
   @Override
   public String toString() {
-    return "{\"columnSize\":"+columnSize+
-            ",\"rowSize\":"+rowSize+
-            ",\"playerOName\":\""+playerOName+
-            "\",\"playerXName\":\""+playerXName+
-            "\",\"lenToWin\":"+lenToWin+
-            ",\"startingPlayerType\":\""+startingPlayerType+"\"}";
+    return "{\"columnSize\":" + columnSize
+            + ",\"rowSize\":" + rowSize
+            + ",\"playerOName\":\"" + playerOName
+            + "\",\"playerXName\":\"" + playerXName
+            + "\",\"lenToWin\":" + lenToWin
+            + ",\"startingPlayerType\":\"" + startingPlayerType + "\"}";
   }
 }
