@@ -3,10 +3,7 @@ package com.github.nogard111;
 import java.awt.*;
 import java.util.Map;
 
-public class BoardHelper {
-
-
-
+public class GameRules {
 
 
   static Map<WinRuleType, WinRule> getStandardRules(int lenToWin) {
@@ -30,7 +27,6 @@ public class BoardHelper {
                 new WinRule(lenToWin-1,lenToWin-1,lenToWin,(Point k) -> new Point(k.x-1,k.y+1),true)
         };*/
   }
-
 
 
   enum WinRuleType {

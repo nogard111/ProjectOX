@@ -15,10 +15,10 @@ public class App {
    * @param args params from console
    */
   public static void main(String[] args) {
-    if(args.length>0 && args[0].equals("L4J")){
+    if (args.length > 0 && args[0].equals("L4J")) {
       DefaultLogger.setLogger(new Logger4j());
       DefaultLogger.getLogger().logInfo("Logger4j selected as a logger");
-    }else{
+    } else {
       DefaultLogger.getLogger().logInfo("Logger4j can be selected by providing \"L4J\" as a argument");
     }
 

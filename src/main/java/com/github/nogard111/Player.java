@@ -7,7 +7,7 @@ public class Player {
   private Player nextPlayer;
 
 
-  public Player(String playerName,FieldType symbol) {
+  public Player(String playerName, FieldType symbol) {
     name = playerName;
     this.symbol = symbol;
   }
@@ -21,7 +21,7 @@ public class Player {
   }
 
   public void updateScoreWin() {
-    score+=3;
+    score += 3;
   }
 
   public void setNext(Player player) {

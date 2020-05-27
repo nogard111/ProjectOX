@@ -68,11 +68,10 @@ public class Board {
 
   public boolean trySetFieldSymbol(FieldType symbol, int x, int y) {
     Field selected = fields[y][x];
-      if(selected .type == FieldType.NONE)
-      {
-        selected.type = symbol;
-        return true;
-      }
-      return false;
+    if (selected.type == FieldType.NONE) {
+      selected.type = symbol;
+      return true;
+    }
+    return false;
   }
 }

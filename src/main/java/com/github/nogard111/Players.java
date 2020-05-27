@@ -12,7 +12,7 @@ public class Players {
     playerX = new Player(playerXName, FieldType.X);
     playerX.setNext(playerO);
     playerO.setNext(playerX);
-    this.startPlayer = startPlayerSymbol == playerO.symbol ? playerO: playerX;
+    this.startPlayer = startPlayerSymbol == playerO.symbol ? playerO : playerX;
     this.currentPlayer = startPlayer;
   }
 
@@ -36,7 +36,7 @@ public class Players {
   }
 
   public Player[] getPlayers() {
-    return new Player[]{playerO ,playerX};
+    return new Player[]{playerO, playerX};
   }
 
   public void finishStage() {

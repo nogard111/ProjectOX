@@ -3,12 +3,12 @@ package com.github.nogard111;
 import com.github.nogard111.logging.DefaultLogger;
 
 public class GameEngine implements IGameEngine {
-  private int gamesToPlay = 3;
   private final int sizeY;
   private final int sizeX;
   private final int lenToWin;
   private final Board board;
-  private Players players;
+  private int gamesToPlay = 3;
+  private final Players players;
   private GameNotifications notificationsPresenter = new GameNotifications() {
     @Override
     public void displayMessage(String message) {
@@ -39,7 +39,7 @@ public class GameEngine implements IGameEngine {
     sizeY = config.rowSize;
     lenToWin = config.lenToWin;
 
-    players = new Players(config.playerOName,config.playerXName,config.startingPlayerType);
+    players = new Players(config.playerOName, config.playerXName, config.startingPlayerType);
     board = new Board(sizeY, sizeX);
   }
 
@@ -51,7 +51,7 @@ public class GameEngine implements IGameEngine {
   @Override
   public boolean clicked(float x, float y) {
     var current = players.getCurrentPlayer();
-    DefaultLogger.getLogger().logInfo("Player "+current.name +" trying to set field at: "+x+" "+y+ " ");
+    DefaultLogger.getLogger().logInfo("Player " + current.name + " trying to set field at: " + x + " " + y + " ");
     if (board.trySetFieldSymbol(players.getCurrentPlayer().symbol,
             (int) (x * sizeX),
             (int) (y * sizeY))) {
@@ -105,7 +105,7 @@ public class GameEngine implements IGameEngine {
   }
 
   private Player[] getWinners() {
-    var collection = BoardHelper.getStandardRules(lenToWin).values();
+    var collection = GameRules.getStandardRules(lenToWin).values();
     WinRule[] winRules = collection.toArray(new WinRule[collection.size()]);
 
     //check winner

@@ -8,7 +8,8 @@ public class StreamProvider {
   public StreamProvider(InputStream in) {
     stream = in;
   }
-  public InputStream getStream(){
+
+  public InputStream getStream() {
     return stream;
   }
 }

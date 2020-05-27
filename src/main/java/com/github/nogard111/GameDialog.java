@@ -11,7 +11,7 @@ public class GameDialog extends JDialog implements GameNotifications {
   private JLabel score;
   private JLabel currentMessage;
 
-  private IGameEngine game;
+  private final IGameEngine game;
 
   public GameDialog(IGameEngine game) {
     this.game = game;
