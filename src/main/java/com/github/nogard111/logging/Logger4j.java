@@ -14,7 +14,7 @@ public class Logger4j implements ILogger {
 
     @Override
     public void LogError(String message, Throwable throwable) {
-        logger.error(message,throwable);
+        logger.error(message, throwable);
     }
 }
 

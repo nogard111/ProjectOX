@@ -9,7 +9,7 @@ public class GameConfig {
     public final byte lenToWin;
     public final FieldType startingPlayer;
 
-    public GameConfig(byte columnSize, byte rowSize, byte lenToWin, String playerO, String playerX,FieldType startingPlayer) {
+    public GameConfig(byte columnSize, byte rowSize, byte lenToWin, String playerO, String playerX, FieldType startingPlayer) {
         this.columnSize = columnSize;
         this.rowSize = rowSize;
         this.playerO = playerO;

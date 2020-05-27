@@ -17,7 +17,7 @@ public class BoardHelper {
     }
 
     static boolean IsPlayerAWinner(WinRule[] winRules, FieldType playerType, Field[][] fields) {
-        for (var rule: winRules) {
+        for (var rule : winRules) {
             for (int y = 0; y < fields.length - rule.limitY; y++) {
                 var row = fields[y];
                 for (int x = 0; x < row.length - rule.limitX; x++) {
@@ -30,7 +30,7 @@ public class BoardHelper {
                         }
                     }
                     if (win) {
-                        System.out.println("win by "+ rule.name);
+                        System.out.println("win by " + rule.name);
                         return true;
                     }
                 }
@@ -61,7 +61,7 @@ public class BoardHelper {
         };*/
     }
 
-    enum WinRuleType{
+    enum WinRuleType {
         HORIZONTAL,
         VERTICAL,
         BACKSLASH,

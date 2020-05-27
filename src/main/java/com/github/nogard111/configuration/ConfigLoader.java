@@ -33,8 +33,7 @@ public class ConfigLoader implements IConfigLoader {
                 System.out.println("Symbols in row to win:");
                 var rowToWin = scanner.nextByte();
 
-                if(columnSize > 20 || rowSize > 20 || (rowToWin > rowSize && rowToWin > columnSize ))
-                {
+                if (columnSize > 20 || rowSize > 20 || (rowToWin > rowSize && rowToWin > columnSize)) {
                     throw new YouGotToBeKiddingException();
                 }
 
@@ -46,16 +45,13 @@ public class ConfigLoader implements IConfigLoader {
                 System.out.println("Who start (o/x)? :");
                 var playerToStartStr = scanner.next();
                 FieldType playerToStart = FieldType.NONE;
-                if(playerToStartStr.compareToIgnoreCase("o") == 0)
-                {
+                if (playerToStartStr.compareToIgnoreCase("o") == 0) {
                     playerToStart = FieldType.O;
                 }
-                if(playerToStartStr.compareToIgnoreCase("x") == 0)
-                {
+                if (playerToStartStr.compareToIgnoreCase("x") == 0) {
                     playerToStart = FieldType.X;
                 }
-                if(playerToStart == FieldType.NONE)
-                {
+                if (playerToStart == FieldType.NONE) {
                     throw new YouGotToBeKiddingException();
                 }
 

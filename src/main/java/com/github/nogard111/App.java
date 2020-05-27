@@ -4,8 +4,7 @@ import com.github.nogard111.GameDialog;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
 
 /**
- * Hello world!
- *
+ * OX GAME
  */
 public class App {
     public static void main(String[] args) {

@@ -18,7 +18,7 @@ public class GameEngine implements IGameEngine {
      * @param notificationPresenter
      * @param config
      */
-    public GameEngine(final GameNotifications notificationPresenter,GameConfig config) {
+    public GameEngine(final GameNotifications notificationPresenter, GameConfig config) {
         notificationsPresenter = notificationPresenter;
 
         String playerOName = config.playerO;
@@ -37,13 +37,9 @@ public class GameEngine implements IGameEngine {
     }
 
     /**
-     *
-     * @param x
-     * Ratio of the board from 0 to 1
-     * @param y
-     * Ratio of the board from 0 to 1
-     * @return
-     * Does click cause change
+     * @param x Ratio of the board from 0 to 1
+     * @param y Ratio of the board from 0 to 1
+     * @return Does click cause change
      */
     @Override
     public boolean clicked(float x, float y) {
@@ -69,23 +65,23 @@ public class GameEngine implements IGameEngine {
 
     private void finishStage(FieldType[] winners) {
         String winnerMessage;
-        if(winners.length == 2) {
+        if (winners.length == 2) {
             for (var winner : winners) {
                 ++players.get(winner).score;
             }
             winnerMessage = "It's Tie";
-        }else {
+        } else {
             var winner = players.get(winners[0]);
             winner.score += 3;
-            winnerMessage = winner.name+ " wins!";
+            winnerMessage = winner.name + " wins!";
         }
 
         showScore();
 
         gamesToPlay--;
-        if(gamesToPlay == 0 ) {
-            notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : "+ GetWinner());
-        }else {
+        if (gamesToPlay == 0) {
+            notificationsPresenter.showFinalWinnerAndClose("FINAL WINNER IS : " + GetWinner());
+        } else {
             clearCurrentStage();
             notificationsPresenter.showWinnerMessage(winnerMessage);
         }
@@ -136,14 +132,14 @@ public class GameEngine implements IGameEngine {
         for (int y = 0; y < fields.length; y++) {
             var row = fields[y];
             for (int x = 0; x < row.length; x++) {
-                if(row[x].type == FieldType.NONE) {
+                if (row[x].type == FieldType.NONE) {
                     emptyFieldExists = true;
                     break;
                 }
             }
-            if(emptyFieldExists)break;
+            if (emptyFieldExists) break;
         }
-        return emptyFieldExists ?null: new FieldType[]{ FieldType.X,FieldType.O};
+        return emptyFieldExists ? null : new FieldType[]{FieldType.X, FieldType.O};
     }
 
     private Field getField(float x, float y) {
