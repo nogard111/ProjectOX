@@ -1,8 +1,6 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
-import java.awt.*;
-
-public class Board {
+class Board {
   Field[][] fields;
 
   /**
@@ -19,7 +17,7 @@ public class Board {
     }
   }
 
-  public boolean areAllFieldsFilled() {
+  boolean areAllFieldsFilled() {
     boolean emptyFieldExists = false;
     for (int y = 0; y < fields.length; y++) {
       var row = fields[y];
@@ -36,7 +34,7 @@ public class Board {
     return emptyFieldExists;
   }
 
-  public void clearBoard() {
+  void clearBoard() {
     for (int y = 0; y < fields.length; y++) {
       var row = fields[y];
       for (int x = 0; x < row.length; x++) {
@@ -45,34 +43,38 @@ public class Board {
     }
   }
 
-  public boolean isPlayerAWinner(WinRule[] winRules, FieldType playerType) {
+  boolean isPlayerAWinner(WinRule[] winRules, FieldType playerType) {
     for (var rule : winRules) {
-      for (int y = 0; y < fields.length - rule.limitY; y++) {
-        var row = fields[y];
-        for (int x = 0; x < row.length - rule.limitX; x++) {
-          boolean win = true;
-          Point place = new Point(rule.reverseXRule ? x + rule.noOfChecks - 1 : x, y);
-          for (int i = 0; i < rule.noOfChecks; i++, place = rule.getNextPointToCheck.apply(place)) {
-            if (fields[place.y][place.x].type != playerType) {
-              win = false;
-              break;
-            }
+      if (isRuleFulfilled(playerType, rule)) return true;
+    }
+    return false;
+  }
+
+  private boolean isRuleFulfilled(FieldType playerType, WinRule rule) {
+    for (int y = 0; y < fields.length - rule.limitY; y++) {
+      var row = fields[y];
+      for (int x = 0; x < row.length - rule.limitX; x++) {
+        boolean win = true;
+        for (var place : rule.generatePlacesToCheck(x, y)) {
+          if (fields[place.y][place.x].type != playerType) {
+            win = false;
+            break;
           }
-          if (win) {
-            System.out.println(playerType.toString() + " win by " + rule.name);
-            return true;
-          }
+        }
+        if (win) {
+          System.out.println(playerType.toString() + " win by " + rule.name);
+          return true;
         }
       }
     }
     return false;
   }
 
-  public Field[][] getFields() {
+  Field[][] getFields() {
     return fields;
   }
 
-  public boolean trySetFieldSymbol(FieldType symbol, int x, int y) {
+  boolean trySetFieldSymbol(FieldType symbol, int x, int y) {
     Field selected = fields[y][x];
     if (selected.type == FieldType.NONE) {
       selected.type = symbol;

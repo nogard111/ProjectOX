@@ -1,5 +1,6 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
+import com.github.nogard111.OXGameUI.GameDialog;
 import com.github.nogard111.configuration.ConfigLoader;
 import com.github.nogard111.configuration.StreamProvider;
 import com.github.nogard111.logging.DefaultLogger;

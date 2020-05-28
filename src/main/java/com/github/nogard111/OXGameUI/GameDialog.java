@@ -1,4 +1,7 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGameUI;
+
+import com.github.nogard111.OXGame.GameNotifications;
+import com.github.nogard111.OXGame.IGameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +10,6 @@ import java.awt.event.*;
 public class GameDialog extends JDialog implements GameNotifications {
   private JPanel contentPane;
   private JButton buttonCancel;
-  private BoardDrawPanel boardDrawPanel;
   private JLabel score;
   private JLabel currentMessage;
 
@@ -121,7 +123,7 @@ public class GameDialog extends JDialog implements GameNotifications {
    * @noinspection ALL
    */
   private void setupUI() {
-    boardDrawPanel = new BoardDrawPanel(game);
+    BoardDrawPanel boardDrawPanel = new BoardDrawPanel(game);
     contentPane = new JPanel(new BorderLayout());
 
     buttonCancel = new JButton();

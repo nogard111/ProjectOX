@@ -1,36 +1,15 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
 import com.github.nogard111.logging.DefaultLogger;
 
-public class GameEngine implements IGameEngine {
+public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   private final int sizeY;
   private final int sizeX;
   private final int lenToWin;
   private final Board board;
   private int gamesToPlay = 3;
   private final Players players;
-  private GameNotifications notificationsPresenter = new GameNotifications() {
-    @Override
-    public void displayMessage(String message) {
-
-    }
-
-    @Override
-    public void displayScore(String message) {
-
-    }
-
-    @Override
-    public void showWinnerMessage(String winnerMessage) {
-
-    }
-
-    @Override
-    public void showFinalWinnerAndClose(String winnerMessage) {
-
-    }
-  };
-
+  private MultiSubscriber notificationsPresenter = new MultiSubscriber();
   /**
    * @param config : configuration of the game
    */
@@ -74,7 +53,7 @@ public class GameEngine implements IGameEngine {
   private void finishStage(Player[] winners) {
     String winnerMessage;
     if (winners.length == 2) {
-      winnerMessage = "It's Tie";
+      winnerMessage = "It's a Tie";
       for (Player winner : winners) {
         winner.updateResultTie();
       }
@@ -118,6 +97,9 @@ public class GameEngine implements IGameEngine {
     return emptyFieldExists ? null : players.getPlayers();
   }
 
+  /*
+  @docParten
+   */
   @Override
   public Field[][] getFields() {
     return board.getFields();
@@ -125,9 +107,15 @@ public class GameEngine implements IGameEngine {
 
   @Override
   public void onStart(final GameNotifications notificationPresenter) {
-    this.notificationsPresenter = notificationPresenter;
+    addSubscriber(notificationPresenter);
     DefaultLogger.getLogger().logInfo("Game started");
     showScore();
     displayWhoShouldMove();
+  }
+
+  @Override
+  public void addSubscriber(GameNotifications subscriber)
+  {
+    notificationsPresenter.addSubscriber(subscriber);
   }
 }

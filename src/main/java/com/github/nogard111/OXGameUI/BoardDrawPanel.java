@@ -1,11 +1,14 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGameUI;
+
+import com.github.nogard111.OXGame.Field;
+import com.github.nogard111.OXGame.IGameEngine;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class BoardDrawPanel extends JPanel {
+class BoardDrawPanel extends JPanel {
 
   IGameEngine gameEngine;
   private int height = 30;
@@ -21,6 +24,7 @@ public class BoardDrawPanel extends JPanel {
     // rules of the game are business logic - it can change and UI should not care
     addMouseListener(new MouseAdapter() {
 
+
       public void mousePressed(MouseEvent e) {
         boolean repaint = gameEngine.clicked((float) (e.getX()) / getWidth(), (float) (e.getY()) / getHeight());
         if (repaint) {
@@ -32,12 +36,12 @@ public class BoardDrawPanel extends JPanel {
   }
 
   public Dimension getPreferredSize() {
-    return new Dimension(600, 600);
+    int initialSize = 600;
+    return new Dimension(initialSize, initialSize);
   }
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
-    //g.drawString("This is my custom Panel!", 10, 20);
     var fields = gameEngine.getFields();
 
     width = g.getClipBounds().width / fields[0].length;

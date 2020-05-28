@@ -1,5 +1,9 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
+import com.github.nogard111.OXGame.FieldType;
+import com.github.nogard111.OXGame.GameConfig;
+import com.github.nogard111.OXGame.GameEngine;
+import com.github.nogard111.OXGame.GameNotifications;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

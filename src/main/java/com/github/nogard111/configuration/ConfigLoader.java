@@ -1,8 +1,8 @@
 package com.github.nogard111.configuration;
 
-import com.github.nogard111.FieldType;
-import com.github.nogard111.GameConfig;
-import com.github.nogard111.YouGotToBeKiddingException;
+import com.github.nogard111.OXGame.FieldType;
+import com.github.nogard111.OXGame.GameConfig;
+import com.github.nogard111.OXGame.YouGotToBeKiddingException;
 import com.github.nogard111.logging.DefaultLogger;
 import java.util.NoSuchElementException;
 import java.util.Scanner;

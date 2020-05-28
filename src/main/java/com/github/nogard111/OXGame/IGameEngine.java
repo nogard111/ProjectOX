@@ -1,6 +1,6 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
-public interface IGameEngine {
+public interface IGameEngine extends IGameNotificationPublisher {
   /**
    * Input click to interact with game.
    * @param x Ratio of the board from 0 to 1
