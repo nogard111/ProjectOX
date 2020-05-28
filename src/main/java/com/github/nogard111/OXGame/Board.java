@@ -1,7 +1,11 @@
 package com.github.nogard111.OXGame;
 
+import java.util.Collection;
+
 class Board {
-  Field[][] fields;
+  final Field[][] fields;
+  final int totalFields;
+  int emptyFieldsCount;
 
   /**
    * @param sizeX : board size on X axis
@@ -15,23 +19,12 @@ class Board {
         row[x] = new Field(x, y);
       }
     }
+    totalFields = sizeX * sizeY;
+    emptyFieldsCount = totalFields;
   }
 
   boolean areAllFieldsFilled() {
-    boolean emptyFieldExists = false;
-    for (int y = 0; y < fields.length; y++) {
-      var row = fields[y];
-      for (int x = 0; x < row.length; x++) {
-        if (row[x].type == FieldType.NONE) {
-          emptyFieldExists = true;
-          break;
-        }
-      }
-      if (emptyFieldExists) {
-        break;
-      }
-    }
-    return emptyFieldExists;
+    return emptyFieldsCount == 0;
   }
 
   void clearBoard() {
@@ -41,11 +34,14 @@ class Board {
         row[x].type = FieldType.NONE;
       }
     }
+    emptyFieldsCount = totalFields;
   }
 
-  boolean isPlayerAWinner(WinRule[] winRules, FieldType playerType) {
+  boolean isPlayerAWinner(Collection<WinRule> winRules, FieldType playerType) {
     for (var rule : winRules) {
-      if (isRuleFulfilled(playerType, rule)) return true;
+      if (isRuleFulfilled(playerType, rule)) {
+        return true;
+      }
     }
     return false;
   }
@@ -70,6 +66,11 @@ class Board {
     return false;
   }
 
+  /**
+   * In future should be returned as clone.
+   *
+   * @return
+   */
   Field[][] getFields() {
     return fields;
   }
@@ -78,6 +79,7 @@ class Board {
     Field selected = fields[y][x];
     if (selected.type == FieldType.NONE) {
       selected.type = symbol;
+      emptyFieldsCount--;
       return true;
     }
     return false;

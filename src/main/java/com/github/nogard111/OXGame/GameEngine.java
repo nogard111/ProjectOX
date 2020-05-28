@@ -10,6 +10,7 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   private int gamesToPlay = 3;
   private final Players players;
   private MultiSubscriber notificationsPresenter = new MultiSubscriber();
+
   /**
    * @param config : configuration of the game
    */
@@ -32,8 +33,8 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
     var current = players.getCurrentPlayer();
     DefaultLogger.getLogger().logInfo("Player " + current.name + " trying to set field at: " + x + " " + y + " ");
     if (board.trySetFieldSymbol(players.getCurrentPlayer().symbol,
-            (int) (x * sizeX),
-            (int) (y * sizeY))) {
+        (int) (x * sizeX),
+        (int) (y * sizeY))) {
       var winners = getWinners();
       if (winners == null) {
         players.switchPlayer();
@@ -84,8 +85,7 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   }
 
   private Player[] getWinners() {
-    var collection = GameRules.getStandardRules(lenToWin).values();
-    WinRule[] winRules = collection.toArray(new WinRule[collection.size()]);
+    var winRules = GameRules.getStandardRules(lenToWin).values();
 
     //check winner
     if (board.isPlayerAWinner(winRules, players.getCurrentPlayer().symbol)) {
@@ -93,7 +93,7 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
     }
 
     //all filled -> tie
-    boolean emptyFieldExists = board.areAllFieldsFilled();
+    boolean emptyFieldExists = !board.areAllFieldsFilled();
     return emptyFieldExists ? null : players.getPlayers();
   }
 
@@ -114,8 +114,7 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   }
 
   @Override
-  public void addSubscriber(GameNotifications subscriber)
-  {
+  public void addSubscriber(GameNotifications subscriber) {
     notificationsPresenter.addSubscriber(subscriber);
   }
 }

@@ -14,7 +14,7 @@ class BoardDrawPanel extends JPanel {
   private int height = 30;
   private int width = 30;
 
-  public BoardDrawPanel(IGameEngine engine) {
+  public BoardDrawPanel(final IGameEngine engine) {
     gameEngine = engine;
 
     setBorder(BorderFactory.createLineBorder(Color.black));

@@ -19,8 +19,7 @@ class WinRule {
     this.reverseXRule = reverseXRule;
   }
 
-  Point[] generatePlacesToCheck(int startX,int startY)
-  {
+  Point[] generatePlacesToCheck(int startX, int startY) {
     var placesToCheck = new Point[noOfChecks];
     Point place = new Point(reverseXRule ? startX + noOfChecks - 1 : startX, startY);
     for (int i = 0; i < noOfChecks; i++, place = getNextPointToCheck.apply(place)) {

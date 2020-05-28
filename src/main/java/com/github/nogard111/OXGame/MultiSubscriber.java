@@ -3,9 +3,8 @@ package com.github.nogard111.OXGame;
 import java.util.ArrayList;
 import java.util.List;
 
-class MultiSubscriber implements GameNotifications,IGameNotificationPublisher
-{
-  List<GameNotifications> subscribers = new ArrayList<>();
+class MultiSubscriber implements GameNotifications,IGameNotificationPublisher {
+  private List<GameNotifications> subscribers = new ArrayList<>();
 
   @Override
   public void displayMessage(String message) {
