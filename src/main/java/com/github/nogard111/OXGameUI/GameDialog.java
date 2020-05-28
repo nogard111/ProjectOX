@@ -1,4 +1,7 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGameUI;
+
+import com.github.nogard111.OXGame.GameNotifications;
+import com.github.nogard111.OXGame.IGameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,14 +10,13 @@ import java.awt.event.*;
 public class GameDialog extends JDialog implements GameNotifications {
   private JPanel contentPane;
   private JButton buttonCancel;
-  private BoardDrawPanel boardDrawPanel;
   private JLabel score;
   private JLabel currentMessage;
 
   private final IGameEngine game;
 
-  public GameDialog(IGameEngine game) {
-    this.game = game;
+  public GameDialog(final IGameEngine gameEngine) {
+    this.game = gameEngine;
     setupUI();
     setContentPane(contentPane);
     setModal(true);
@@ -23,42 +25,42 @@ public class GameDialog extends JDialog implements GameNotifications {
     gameDialog.addWindowListener(new WindowListener() {
 
       @Override
-      public void windowOpened(WindowEvent e) {
+      public void windowOpened(final WindowEvent e) {
         game.onStart(gameDialog);
       }
 
       @Override
-      public void windowClosing(WindowEvent e) {
+      public void windowClosing(final WindowEvent e) {
 
       }
 
       @Override
-      public void windowClosed(WindowEvent e) {
+      public void windowClosed(final WindowEvent e) {
 
       }
 
       @Override
-      public void windowIconified(WindowEvent e) {
+      public void windowIconified(final WindowEvent e) {
 
       }
 
       @Override
-      public void windowDeiconified(WindowEvent e) {
+      public void windowDeiconified(final WindowEvent e) {
 
       }
 
       @Override
-      public void windowActivated(WindowEvent e) {
+      public void windowActivated(final WindowEvent e) {
 
       }
 
       @Override
-      public void windowDeactivated(WindowEvent e) {
+      public void windowDeactivated(final WindowEvent e) {
 
       }
     });
     buttonCancel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(final ActionEvent e) {
         onCancel();
       }
     });
@@ -66,14 +68,14 @@ public class GameDialog extends JDialog implements GameNotifications {
     // call onCancel() when cross is clicked
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
+      public void windowClosing(final WindowEvent e) {
         onCancel();
       }
     });
 
     // call onCancel() on ESCAPE
     contentPane.registerKeyboardAction(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(final ActionEvent e) {
         onCancel();
       }
     }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -121,7 +123,7 @@ public class GameDialog extends JDialog implements GameNotifications {
    * @noinspection ALL
    */
   private void setupUI() {
-    boardDrawPanel = new BoardDrawPanel(game);
+    BoardDrawPanel boardDrawPanel = new BoardDrawPanel(game);
     contentPane = new JPanel(new BorderLayout());
 
     buttonCancel = new JButton();

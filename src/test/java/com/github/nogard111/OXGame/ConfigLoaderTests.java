@@ -1,4 +1,4 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
 import com.github.nogard111.configuration.ConfigLoader;
 import com.github.nogard111.configuration.StreamProvider;

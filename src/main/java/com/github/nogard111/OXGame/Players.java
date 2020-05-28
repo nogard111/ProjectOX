@@ -1,4 +1,4 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
 
 public class Players {
@@ -16,30 +16,30 @@ public class Players {
     this.currentPlayer = startPlayer;
   }
 
-  public String getPlayersStringWithHighestScore() {
+  String getPlayersStringWithHighestScore() {
     if (playerO.score == playerX.score) {
       return "NONE !";
     }
     return playerO.score > playerX.score ? playerO.name : playerX.name;
   }
 
-  public String getAllPlayersScore() {
+  String getAllPlayersScore() {
     return playerO.getScore() + " " + playerX.getScore();
   }
 
-  public Player getCurrentPlayer() {
+  Player getCurrentPlayer() {
     return currentPlayer;
   }
 
-  public void switchPlayer() {
+  void switchPlayer() {
     currentPlayer = currentPlayer.getNextPlayer();
   }
 
-  public Player[] getPlayers() {
+  Player[] getPlayers() {
     return new Player[]{playerO, playerX};
   }
 
-  public void finishStage() {
+  void finishStage() {
     startPlayer = startPlayer.getNextPlayer();
     currentPlayer = startPlayer;
   }

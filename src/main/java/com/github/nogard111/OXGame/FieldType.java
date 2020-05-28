@@ -1,4 +1,4 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
 import java.util.NoSuchElementException;
 

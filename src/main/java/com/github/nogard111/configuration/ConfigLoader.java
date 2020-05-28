@@ -1,9 +1,10 @@
 package com.github.nogard111.configuration;
 
-import com.github.nogard111.FieldType;
-import com.github.nogard111.GameConfig;
-import com.github.nogard111.YouGotToBeKiddingException;
+import com.github.nogard111.OXGame.FieldType;
+import com.github.nogard111.OXGame.GameConfig;
+import com.github.nogard111.OXGame.YouGotToBeKiddingException;
 import com.github.nogard111.logging.DefaultLogger;
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -14,7 +15,9 @@ public class ConfigLoader implements IConfigLoader {
     streamProvider = in;
   }
 
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public GameConfig getConfigFromUser() {
     GameConfig config = null;
@@ -22,6 +25,7 @@ public class ConfigLoader implements IConfigLoader {
     boolean ready = false;
     while (!ready) {
       try {
+        final int maxBoard = 30;
         var scanner = new Scanner(streamProvider.getStream());
         System.out.println("You need do everything correctly in one go");
 
@@ -32,7 +36,9 @@ public class ConfigLoader implements IConfigLoader {
         System.out.println("Symbols in line to win:");
         var symbolsInLineToWin = scanner.nextByte();
 
-        if (columnSize > 20 || rowSize > 20 || (symbolsInLineToWin > rowSize && symbolsInLineToWin > columnSize)) {
+        if (columnSize < 1 || rowSize < 1
+            || columnSize > maxBoard || rowSize > maxBoard
+            || (symbolsInLineToWin > rowSize && symbolsInLineToWin > columnSize)) {
           throw new YouGotToBeKiddingException();
         }
 

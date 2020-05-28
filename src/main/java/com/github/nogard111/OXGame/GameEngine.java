@@ -1,35 +1,15 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
 import com.github.nogard111.logging.DefaultLogger;
 
-public class GameEngine implements IGameEngine {
+public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   private final int sizeY;
   private final int sizeX;
   private final int lenToWin;
   private final Board board;
   private int gamesToPlay = 3;
   private final Players players;
-  private GameNotifications notificationsPresenter = new GameNotifications() {
-    @Override
-    public void displayMessage(String message) {
-
-    }
-
-    @Override
-    public void displayScore(String message) {
-
-    }
-
-    @Override
-    public void showWinnerMessage(String winnerMessage) {
-
-    }
-
-    @Override
-    public void showFinalWinnerAndClose(String winnerMessage) {
-
-    }
-  };
+  private MultiSubscriber notificationsPresenter = new MultiSubscriber();
 
   /**
    * @param config : configuration of the game
@@ -53,8 +33,8 @@ public class GameEngine implements IGameEngine {
     var current = players.getCurrentPlayer();
     DefaultLogger.getLogger().logInfo("Player " + current.name + " trying to set field at: " + x + " " + y + " ");
     if (board.trySetFieldSymbol(players.getCurrentPlayer().symbol,
-            (int) (x * sizeX),
-            (int) (y * sizeY))) {
+        (int) (x * sizeX),
+        (int) (y * sizeY))) {
       var winners = getWinners();
       if (winners == null) {
         players.switchPlayer();
@@ -74,7 +54,7 @@ public class GameEngine implements IGameEngine {
   private void finishStage(Player[] winners) {
     String winnerMessage;
     if (winners.length == 2) {
-      winnerMessage = "It's Tie";
+      winnerMessage = "It's a Tie";
       for (Player winner : winners) {
         winner.updateResultTie();
       }
@@ -105,8 +85,7 @@ public class GameEngine implements IGameEngine {
   }
 
   private Player[] getWinners() {
-    var collection = GameRules.getStandardRules(lenToWin).values();
-    WinRule[] winRules = collection.toArray(new WinRule[collection.size()]);
+    var winRules = GameRules.getStandardRules(lenToWin).values();
 
     //check winner
     if (board.isPlayerAWinner(winRules, players.getCurrentPlayer().symbol)) {
@@ -114,10 +93,13 @@ public class GameEngine implements IGameEngine {
     }
 
     //all filled -> tie
-    boolean emptyFieldExists = board.areAllFieldsFilled();
+    boolean emptyFieldExists = !board.areAllFieldsFilled();
     return emptyFieldExists ? null : players.getPlayers();
   }
 
+  /*
+  @docParten
+   */
   @Override
   public Field[][] getFields() {
     return board.getFields();
@@ -125,9 +107,14 @@ public class GameEngine implements IGameEngine {
 
   @Override
   public void onStart(final GameNotifications notificationPresenter) {
-    this.notificationsPresenter = notificationPresenter;
+    addSubscriber(notificationPresenter);
     DefaultLogger.getLogger().logInfo("Game started");
     showScore();
     displayWhoShouldMove();
+  }
+
+  @Override
+  public void addSubscriber(GameNotifications subscriber) {
+    notificationsPresenter.addSubscriber(subscriber);
   }
 }

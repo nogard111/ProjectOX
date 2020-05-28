@@ -1,6 +1,8 @@
-package com.github.nogard111;
+package com.github.nogard111.OXGame;
 
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -20,7 +22,8 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 0, 1);
         board.trySetFieldSymbol(FieldType.O, 0, 2);
 
-        assertTrue(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+
+        assertTrue(board.isPlayerAWinner(List.of(rule), FieldType.O));
     }
 
     /**
@@ -30,7 +33,6 @@ public class RulesTest {
     public void verticalRuleFalse()
     {
         var rule = GameRules.getStandardRules(3).get(GameRules.WinRuleType.VERTICAL);
-
         var board = new Board(3,3);
 
         board.trySetFieldSymbol(FieldType.O, 0, 0);
@@ -38,7 +40,7 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 2, 0);
 
 
-        assertFalse(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertFalse(board.isPlayerAWinner(List.of(rule), FieldType.O));
     }
 
     /**
@@ -57,7 +59,7 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 2, 0);
 
 
-        assertTrue(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertTrue(board.isPlayerAWinner(List.of(rule), FieldType.O));
     }
 
 
@@ -75,6 +77,6 @@ public class RulesTest {
         board.trySetFieldSymbol(FieldType.O, 0, 1);
         board.trySetFieldSymbol(FieldType.O, 0, 2);
 
-        assertFalse(board.isPlayerAWinner(new WinRule[]{rule}, FieldType.O));
+        assertFalse(board.isPlayerAWinner(List.of(rule), FieldType.O));
     }
 }
