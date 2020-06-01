@@ -26,13 +26,10 @@ public class App {
     var configLoader = new ConfigLoader(new StreamProvider(System.in));
     var config = configLoader.getConfigFromUser();
 
-    //config = new GameConfig((byte) 3, (byte) 4, (byte) 3, "Adam", "Ewa", FieldType.O);
-
     var game = new GameEngine(config);
     GameDialog dialog = new GameDialog(game);
     dialog.pack();
     dialog.setVisible(true);
-    System.exit(0);
   }
 }
 

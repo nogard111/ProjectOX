@@ -8,7 +8,10 @@ public class ConsoleLogger implements ILogger {
 
   @Override
   public void logError(String message, Throwable throwable) {
+    System.err.println(message);
     System.out.println(message);
-    throwable.printStackTrace(System.out);
+    if(throwable != null) {
+      throwable.printStackTrace(System.err);
+    }
   }
 }

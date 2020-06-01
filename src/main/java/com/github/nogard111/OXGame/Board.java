@@ -50,18 +50,23 @@ class Board {
     for (int y = 0; y < fields.length - rule.limitY; y++) {
       var row = fields[y];
       for (int x = 0; x < row.length - rule.limitX; x++) {
-        boolean win = true;
-        for (var place : rule.generatePlacesToCheck(x, y)) {
-          if (fields[place.y][place.x].type != playerType) {
-            win = false;
-            break;
-          }
-        }
-        if (win) {
-          System.out.println(playerType.toString() + " win by " + rule.name);
-          return true;
-        }
+        if (isRuleFulfilledFromPlaceXY(x, y, rule, playerType)) return true;
       }
+    }
+    return false;
+  }
+
+  private boolean isRuleFulfilledFromPlaceXY(int x, int y, WinRule rule, FieldType playerType) {
+    boolean win = true;
+    for (var place : rule.generatePlacesToCheck(x, y)) {
+      if (fields[place.y][place.x].type != playerType) {
+        win = false;
+        break;
+      }
+    }
+    if (win) {
+      System.out.println(playerType.toString() + " win by " + rule.name);
+      return true;
     }
     return false;
   }
