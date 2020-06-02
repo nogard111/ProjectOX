@@ -1,15 +1,24 @@
 package com.github.nogard111.OXGame;
 
 import com.github.nogard111.logging.DefaultLogger;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public class GameEngine implements IGameEngine, IGameNotificationPublisher {
+public class GameEngine implements IGameEngine, IGameNotificationPublisher, IStateMachine {
   private final int sizeY;
   private final int sizeX;
   private final int lenToWin;
   private final Board board;
+  private final Function<Object, Boolean> emptyCorrectFunction = (Object obj) -> {
+    return true;
+  };
   private int gamesToPlay = 3;
   private final Players players;
-  private MultiSubscriber notificationsPresenter = new MultiSubscriber();
+  private final MultiSubscriber notificationsPresenter = new MultiSubscriber();
+  private GameState currentState = GameState.INITIALIZATION;
+  private final Map<GameState,GameplayState> gameStates;
 
   /**
    * @param config : configuration of the game
@@ -21,6 +30,27 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
 
     players = new Players(config.playerOName, config.playerXName, config.startingPlayerType);
     board = new Board(sizeX, sizeY);
+
+    gameStates = new EnumMap<GameState, GameplayState>(GameState.class);
+    var GameStatesList = new ArrayList<GameplayState>();
+    GameStatesList.add(
+        new GameplayState(GameState.INITIALIZATION,emptyCorrectFunction,
+            Map.of(GameState.USER_ACTION, emptyCorrectFunction))
+    );
+    GameStatesList.add(
+        new GameplayState(GameState.USER_ACTION,emptyCorrectFunction,
+            Map.of(
+                GameState.UPDATE_BOARD, emptyCorrectFunction))
+    );
+    GameStatesList.add(
+        new GameplayState(GameState.UPDATE_BOARD,emptyCorrectFunction,
+            Map.of(
+                GameState.USER_ACTION, emptyCorrectFunction))
+    );
+
+    for (var state : GameStatesList) {
+      gameStates.put(state.state, state);
+    }
   }
 
   /**
@@ -30,28 +60,36 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
    */
   @Override
   public boolean clicked(float x, float y) {
+    return stateHandlerUserAction(x, y);
+  }
+
+  boolean stateHandlerUserAction(float x, float y) {
     var current = players.getCurrentPlayer();
     DefaultLogger.getLogger().logInfo("Player " + current.name + " trying to set field at: " + x + " " + y + " ");
     if (board.trySetFieldSymbol(players.getCurrentPlayer().symbol,
         (int) (x * sizeX),
         (int) (y * sizeY))) {
-      var winners = getWinners();
-      if (winners == null) {
-        players.switchPlayer();
-        displayWhoShouldMove();
-      } else {
-        finishStage(winners);
-      }
+      stateHandlerUpdateBoard();
       return true;
     }
     return false;
+  }
+
+  void stateHandlerUpdateBoard() {
+    var winners = getWinners();
+    if (winners == null) {
+      players.switchPlayer();
+      displayWhoShouldMove();
+    } else {
+      stateHandlerFinishStage(winners);
+    }
   }
 
   void displayWhoShouldMove() {
     notificationsPresenter.displayMessage("Make your move " + players.getCurrentPlayer().name);
   }
 
-  private void finishStage(Player[] winners) {
+  private void stateHandlerFinishStage(Player[] winners) {
     String winnerMessage;
     if (winners.length == 2) {
       winnerMessage = "It's a Tie";
@@ -67,16 +105,23 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
 
     gamesToPlay--;
     if (gamesToPlay == 0) {
-      String finalWinnerMessage = "FINAL WINNER IS : " + players.getPlayersStringWithHighestScore();
-      DefaultLogger.getLogger().logInfo(finalWinnerMessage);
-      notificationsPresenter.showFinalWinnerAndClose(finalWinnerMessage);
+      stateHandlerFinalFinishGame();
     } else {
-      board.clearBoard();
-      notificationsPresenter.showWinnerMessage(winnerMessage);
+      stateTransitionWinToUserAction(winnerMessage);
     }
+  }
 
+  private void stateTransitionWinToUserAction(String winnerMessage) {
+    board.clearBoard();
+    notificationsPresenter.showWinnerMessage(winnerMessage);
     players.finishStage();
     displayWhoShouldMove();
+  }
+
+  private void stateHandlerFinalFinishGame() {
+    String finalWinnerMessage = "FINAL WINNER IS : " + players.getPlayersStringWithHighestScore();
+    DefaultLogger.getLogger().logInfo(finalWinnerMessage);
+    notificationsPresenter.showFinalWinnerAndClose(finalWinnerMessage);
   }
 
   private void showScore() {
@@ -97,9 +142,7 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
     return emptyFieldExists ? null : players.getPlayers();
   }
 
-  /*
-  @docParten
-   */
+
   @Override
   public Field[][] getFields() {
     return board.getFields();
@@ -111,10 +154,29 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
     DefaultLogger.getLogger().logInfo("Game started");
     showScore();
     displayWhoShouldMove();
+    updateState(GameState.USER_ACTION);
   }
 
   @Override
   public void addSubscriber(GameNotifications subscriber) {
     notificationsPresenter.addSubscriber(subscriber);
+  }
+
+  public void updateState(GameState requestedState)
+  {
+    var state = this.gameStates.get(currentState);
+    if(state.possibleNextState.containsKey(requestedState)){
+      var transitionAction = state.possibleNextState.get(requestedState);
+      if(transitionAction.apply(null))
+      {
+        currentState = requestedState;
+        this.gameStates.get(currentState).stateInitialAction.apply(null);
+
+      }else{
+        DefaultLogger.getLogger().logError("Transition "+currentState+" to "+requestedState+" failed ",null);
+      }
+    }else{
+      DefaultLogger.getLogger().logError("Transition "+currentState+" to "+requestedState+" is not possible ",null);
+    }
   }
 }
