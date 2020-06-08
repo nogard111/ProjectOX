@@ -1,6 +1,7 @@
 package com.github.nogard111.OXGame;
 
 import com.github.nogard111.logging.DefaultLogger;
+import com.google.inject.Inject;
 
 public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   private final int sizeY;
@@ -14,6 +15,7 @@ public class GameEngine implements IGameEngine, IGameNotificationPublisher {
   /**
    * @param config : configuration of the game
    */
+  @Inject
   public GameEngine(GameConfig config) {
     sizeX = config.columnSize;
     sizeY = config.rowSize;
